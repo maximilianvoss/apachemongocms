@@ -1,0 +1,1 @@
+LoadModule mongocms_module /usr/local/mongocms/lib/libmod_mongocms.so
