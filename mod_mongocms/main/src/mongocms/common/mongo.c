@@ -141,7 +141,7 @@ mongo_cursor_t *mongo_query(mongo_config_t *config, apr_pool_t *pool, apr_table_
 	mongoc_collection_t *collection = mongo_getCollection(config, client);
 	
 	query = mongo_map2bson(pool, map);
-	DEBUG_MSG("%s_query([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): Quering: %s", bson_as_json(query, NULL));
+	DEBUG_MSG("%s_query([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): Querying: %s", bson_as_json(query, NULL));
 	mongoc_cursor_t *cursor = mongoc_collection_find(collection, MONGOC_QUERY_NONE, 0, 0, 0, query,
 	                                                 NULL, NULL);
 
