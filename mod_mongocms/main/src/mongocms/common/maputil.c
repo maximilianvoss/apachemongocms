@@ -100,11 +100,13 @@ apr_table_t *maputil_mapMap(apr_pool_t *pool, apr_table_t *sourceMap, apr_table_
 	data.resultMap = apr_table_make(pool, 1);
 	data.mappingMap = mappingMap;
 
-	if ( sourceMap != NULL && mappingMap != NULL && apr_is_empty_table(sourceMap) && apr_is_empty_table(mappingMap) ) {
+	if ( sourceMap != NULL && mappingMap != NULL && !apr_is_empty_table(sourceMap) && !apr_is_empty_table(mappingMap) ) {
 		apr_table_do(maputil_mapMapLoop, &data, sourceMap, NULL);
 		DEBUG_PUT("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *])... DONE");
 		return data.resultMap;
 	} else {
+		DEBUG_PUT("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *]): One of the maps is empty");
+		DEBUG_PUT("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *])... DONE");
 		return sourceMap;
 	}
 }
