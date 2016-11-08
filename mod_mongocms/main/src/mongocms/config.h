@@ -71,7 +71,7 @@ typedef struct {
 // Type for image transformations
 typedef struct {
 	uint16_t width;
-	char name[STRING_STD_LENGTH];
+	char *name;
 } module_config_transform_t;
 
 #endif

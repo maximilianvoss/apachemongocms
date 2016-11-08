@@ -8,7 +8,7 @@ const char *directives_parserString(cmd_parms *cmd, void *cfg, const char *arg);
 const char *directives_parserInt(cmd_parms *cmd, void *cfg, const char *arg);
 const char *directives_parserStringList(cmd_parms *cmd, void *cfg, const char *arg);
 const char *directives_parserTransformator(cmd_parms *cmd, void *cfg, const char *arg1, const char *arg2);
-const char *directives_parserSpecialAssetImageTransform(cmd_parms *cmd, void *cfg, const char *arg1, const char *arg2);
+const char *directives_parserSpecialAssetTransform(cmd_parms *cmd, void *cfg, const char *arg1, const char *arg2);
 const char *directives_parseCreateList(cmd_parms *cmd, void *mconfig, const char *args);
 
 // Documents
@@ -67,7 +67,7 @@ command_rec mongocms_directives[] = {
 		// Assets
 		AP_INIT_TAKE1(AssetStorePath, directives_parserString, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE1(AssetTmpPath, directives_parserString, NULL, RSRC_CONF, ""),
-		AP_INIT_TAKE2(AssetTransform, directives_parserSpecialAssetImageTransform, NULL, RSRC_CONF, ""),
+		AP_INIT_TAKE2(AssetTransform, directives_parserSpecialAssetTransform, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE1(AssetMetadataParamInputWhitelist, directives_parserStringList, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE1(AssetMetadataParamOutputWhitelist, directives_parserStringList, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE2(AssetMetadataParamMapping, directives_parserTransformator, NULL, RSRC_CONF, ""),
@@ -161,15 +161,18 @@ const char *directives_parserTransformator(cmd_parms *cmd, void *cfg, const char
 	return NULL;
 }
 
-const char *directives_parserSpecialAssetImageTransform(cmd_parms *cmd, void *cfg, const char *arg1, const char *arg2) {
-
+const char *directives_parserSpecialAssetTransform(cmd_parms *cmd, void *cfg, const char *arg1, const char *arg2) {
 	if ( getModuleConfig()->asset.assetTransform == NULL ) {
 		getModuleConfig()->asset.assetTransform = apr_array_make(getModuleConfig()->modulePool, CONFIG_TABLE_INIT_SIZE, sizeof(module_config_transform_t));
 	}
 
 	module_config_transform_t *newPtr = apr_array_push(getModuleConfig()->asset.assetTransform);
-	strncpy(newPtr->name, arg1, STRING_STD_LENGTH);
+
+	size_t length = strlen(arg1);
+	newPtr->name = apr_pcalloc(getModuleConfig()->modulePool, sizeof(char) * length + 1);
+	memcpy(newPtr->name, arg1, length);
 	newPtr->width = atoi(arg2);
+
 	return NULL;
 }
 
