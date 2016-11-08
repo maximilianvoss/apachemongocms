@@ -7,6 +7,6 @@
 #define USER_LOGIN_FILENAME "login.json"
 #define USER_LOGOUT_FILENAME "logout.json"
 
-int user_handler(request_rec *request);
+int user_handler(request_rec *request, char *filename);
 
 #endif 

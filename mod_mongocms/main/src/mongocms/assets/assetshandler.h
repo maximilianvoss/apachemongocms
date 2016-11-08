@@ -3,6 +3,6 @@
 
 #include "../includes.h"
 
-int assets_handler(request_rec *request);
+int assets_handler(request_rec *request, char *filename);
 
 #endif

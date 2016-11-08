@@ -8,7 +8,7 @@ Values which can be set via Apache Configuration while runtime.
 | DocMongoURI        | String   | mongodb://localhost:27017/ | Setting the URI for the document's MongoDB              |
 | DocMongoDB         | String   | publisher                  | DB in which the document's data shall be stored         |
 | DocMongoCollection | String   | documents                  | Collection in which the document's data shall be stored |
-| documentPropInputWhitelist          | String[] | parameter                  | a parameter for writing documents                       |
+| propWhitelistIn          | String[] | parameter                  | a parameter for writing documents                       |
 | HtmlEscape         | String[] | parameter                  | Escaping the HTML of this particular parameter          |
   
   

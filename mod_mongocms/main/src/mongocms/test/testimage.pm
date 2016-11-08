@@ -20,7 +20,7 @@ sub testimage_uploadPUT($) {
     my $statuscode = $1;
     die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
 
-    $output =~ /"\$oid":"(\w+)"/;
+    $output =~ /"myId":"(\w+)"/;
     my $oid = $1;
 
     print "PASSED\n";
@@ -43,7 +43,7 @@ sub testimage_uploadPOST($) {
     my $statuscode = $1;
     die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
 
-    $output =~ /"\$oid":"(\w+)"/;
+    $output =~ /"myId":"(\w+)"/;
     my $oid = $1;
 
     print "PASSED\n";
@@ -128,7 +128,7 @@ sub testimage_getProperties($) {
     my $statuscode = $1;
     die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
 
-    $output =~ /"file":"([\w|\\|\/]+)"/;
+    $output =~ /"fi":"([\w|\\|\/]+)"/;
     my $file = $1;
     die 'Wrong filepath: '.$file."\n".$output unless ( $file eq '\/var\/www\/html\/assetstore\/69\/e9\/69e92ac37ec6c1859d074d1048460acc' );
 

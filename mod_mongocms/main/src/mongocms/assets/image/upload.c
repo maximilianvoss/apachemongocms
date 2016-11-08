@@ -79,7 +79,7 @@ int upload_image(mongo_config_t *config, request_rec *request) {
 		apr_table_set(responseMap, MONGO_OID, oidStr);
 		apr_table_set(responseMap, "Status", "OK");
 
-		ap_rputs(jsonmapfilter_outboundMap(request->pool, responseMap, getModuleConfig()->asset.metadataParamMapping), request);
+		ap_rputs(jsonmapfilter_outboundMap(request->pool, responseMap, getModuleConfig()->asset.propMappingOut), request);
 	}
 
 	return status;

@@ -55,11 +55,13 @@ char *jsonhandling_aprmap2json(apr_pool_t *pool, apr_table_t *map) {
 	map2json_create(map2jsonObj);
 	size_t length = strlen(map2jsonObj->buffer);
 
-	char *jsonString = apr_pcalloc(pool, length);
-	strcpy(jsonString, map2jsonObj->buffer);
+	DEBUG_MSG("%s_aprmap2json([pool], [map]): json length=%ld", length);
+	char *jsonString = apr_pcalloc(pool, length + 1);
+	memcpy(jsonString, map2jsonObj->buffer, length + 1);
 
 	DEBUG_PUT("%s_aprmap2json([pool], [map]): destroy map2json object");
 	map2json_destroy(map2jsonObj);
+	DEBUG_PUT("%s_aprmap2json([pool], [map]): destroy map2json object ... DONE");
 
 	DEBUG_MSG("%s_aprmap2json([pool], [map]): json=%s", jsonString);
 	DEBUG_PUT("%s_aprmap2json([pool], [map])... DONE");

@@ -1,8 +1,6 @@
 #include "map2json.h"
 #include "config.h"
 #include "debugging.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "stringlib.h"
 
 
@@ -112,7 +110,8 @@ map2json_tree_t *map2json_createEmptyTreeObject(char *key) {
 long map2json_getArrayId(char *key) {
 	DEBUG_TEXT("map2json_getArrayId(%s)... ", key);
 
-	char buffer[JSON2MAP_BUFFER_LENGTH];
+	char *buffer;
+	int value;
 
 	if ( key == NULL ) {
 		return ARRAYID_NOT_SET;
@@ -120,6 +119,7 @@ long map2json_getArrayId(char *key) {
 	key++;
 	long length = strlen(key);
 
+	buffer = calloc(sizeof(char), length);
 	memcpy(buffer, key, length);
 	buffer[length - 1] = '\0';
 
@@ -127,8 +127,10 @@ long map2json_getArrayId(char *key) {
 		return ARRAYID_IS_COUNT;
 	}
 
+	value = atoi(buffer);
+	free(buffer);
 	DEBUG_TEXT("map2json_getArrayId(%s)... DONE", key);
-	return atoi(buffer);
+	return value;
 }
 
 
@@ -193,7 +195,7 @@ map2json_tree_t *map2json_createTree(map2json_t *obj) {
 	map2json_tree_t *treeChild;
 	map2json_keyvalue_t *pair;
 	stringlib_tokens_t nameTokens[JSON2MAP_MAX_MAP_KEY_DEPTH];
-	char buffer[JSON2MAP_BUFFER_LENGTH];
+	char *buffer;
 	int i;
 
 	treeRoot = map2json_createEmptyTreeObject(NULL);
@@ -204,7 +206,7 @@ map2json_tree_t *map2json_createTree(map2json_t *obj) {
 		treeObj = treeRoot;
 
 		for ( i = 0; i < count; i++ ) {
-			stringlib_getToken(&nameTokens[i], pair->key, buffer);
+			buffer = stringlib_getToken(&nameTokens[i], pair->key);
 
 			long arrayId = ARRAYID_NOT_SET;
 			long pos = map2json_checkArrayObject(buffer);
@@ -229,6 +231,7 @@ map2json_tree_t *map2json_createTree(map2json_t *obj) {
 			} else {
 				treeObj = treeChild;
 			}
+			free(buffer);
 		}
 		map2json_storeValues(treeObj, pair->value);
 		pair = pair->next;

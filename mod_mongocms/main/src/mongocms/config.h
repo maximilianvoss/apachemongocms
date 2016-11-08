@@ -9,25 +9,36 @@ This file contains standard configurations and structures to run the Apache modu
 #include "includes.h"
 #include "common/mongo.h"
 
+
+typedef struct s_mongo_config_query_list {
+	char *name;
+	apr_table_t *map;
+	struct s_mongo_config_query_list *next;
+} mongo_config_query_list_t;
+
 // type for all document dependent configurations
 typedef struct {
 	mongo_config_t database;
-	apr_array_header_t *documentPropInputWhitelist;
-	apr_array_header_t *documentPropOutputWhitelist;
+	apr_array_header_t *propWhitelistIn;
+	apr_array_header_t *propWhitelistOut;
 
-	apr_table_t *documentPropMapping;
-	apr_table_t *documentPropMappingInverse;
+	apr_table_t *propMappingOut;
+	apr_table_t *propMappingIn;
+
+	mongo_config_query_list_t *queryList;
 } mongo_config_document_t;
 
 // type for all asset dependent configurations
 typedef struct {
 	mongo_config_t database;
 
-	apr_array_header_t *metadataParamInputWhitelist;
-	apr_array_header_t *metadataParamOutputWhitelist;
+	apr_array_header_t *propWhitelistIn;
+	apr_array_header_t *propWhitelistOut;
 
-	apr_table_t *metadataParamMapping;
-	apr_table_t *metadataParamMappingInverse;
+	apr_table_t *propMappingOut;
+	apr_table_t *propMappingIn;
+
+	mongo_config_query_list_t *queryList;
 
 	const char *assetstorepath;
 	const char *assettmppath;
@@ -38,12 +49,13 @@ typedef struct {
 // type for all user dependent configurations
 typedef struct {
 	mongo_config_t database;
-	apr_table_t *profileParamMapping;
-	apr_table_t *profileParamMappingInverse;
-	apr_array_header_t *profileParamInputWhitelist;
-	apr_array_header_t *profileParamOutputWhitelist;
+	apr_table_t *propMappingOut;
+	apr_table_t *propMappingIn;
+	apr_array_header_t *propWhitelistIn;
+	apr_array_header_t *propWhitelistOut;
 	int sessionMaxCount;
 	int sessionExpirationTime;
+	mongo_config_query_list_t *queryList;
 } mongo_config_user_t;
 
 // Type for configurations
@@ -54,7 +66,6 @@ typedef struct {
 	mongo_config_document_t document;
 	mongo_config_user_t user;
 	mongo_config_asset_t asset;
-	
 } module_config_t;
 
 // Type for image transformations

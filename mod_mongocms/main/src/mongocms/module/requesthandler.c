@@ -22,13 +22,13 @@ int request_handler(request_rec *request) {
 	}
 
 	// check for user/login/profile requests
-	if ( !strcmp(filename, USER_LOGIN_FILENAME) || !strcmp(filename, USER_LOGOUT_FILENAME) || !strcmp(filename, USER_PROFILE_FILENAME) ) {
-		return user_handler(request);
+	if ( !strcmp(filename, USER_LOGIN_FILENAME) || !strcmp(filename, USER_LOGOUT_FILENAME) || !strcmp(filename, USER_PROFILE_FILENAME) || stringutil_startsWith(request->uri, "/user") ) {
+		return user_handler(request, filename);
 	}
 
 	if ( stringutil_startsWith(request->uri, "/dam") ) {
-		return assets_handler(request);
+		return assets_handler(request, filename);
 	}
 
-	return documents_handler(request);
+	return documents_handler(request, filename);
 }

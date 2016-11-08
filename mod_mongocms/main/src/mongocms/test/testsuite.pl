@@ -15,6 +15,7 @@ use testprofile;
 use testimage;
 use testrating;
 use testdocument;
+use testlists;
 
 my $tokenID = testlogin_login();
 testprofile_getProfile($tokenID);
@@ -36,5 +37,12 @@ testimage_getValidRendition($imagePOST);
 testimage_getInValidRendition($imagePOST);
 testimage_getValidRenditionPNG($imagePOST);
 testimage_getProperties($imagePOST);
+
+testlist_asset_valid($tokenID);
+testlist_asset_invalid($tokenID);
+testlist_user_valid($tokenID);
+testlist_user_invalid($tokenID);
+testlist_document_valid($tokenID);
+testlist_document_invalid($tokenID);
 
 testlogin_logout($tokenID);

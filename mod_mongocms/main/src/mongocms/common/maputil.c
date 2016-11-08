@@ -1,5 +1,6 @@
 #include "maputil.h"
 #include "../libs/json2map/config.h"
+#include "../constants.h"
 
 #ifdef COMMON_MAPUTIL_DEBUG
 
@@ -23,10 +24,9 @@ typedef struct {
 } maputil_mapMap_t;
 
 typedef struct {
-	apr_pool_t *pool;
-	char *matchString;
-	long *maxCount;
-} maputil_maxArrayId_t;
+	apr_table_t *resultMap;
+	char *prefixer;
+} maputil_mapPrefix_t;
 
 // Loop over map to remove unlisted elements
 int maputil_removeUnlistedElementesLoop(void *data, const char *key, const char *value) {
@@ -127,6 +127,31 @@ long maputil_getMaxArrayId(apr_pool_t *pool, apr_table_t *map, char *matchString
 	return atoi(value);
 }
 
+int maputil_moveMapElementsToPrefixLoop(void *data, const char *key, const char *value) {
+	char buffer[BUFFER_SIZE];
+	maputil_mapPrefix_t *container = (maputil_mapPrefix_t *) data;
+
+	sprintf(buffer, "%s%s", container->prefixer, key);
+	apr_table_set(container->resultMap, buffer, value);
+
+	return 1;
+}
+
+
+apr_table_t *maputil_moveMapElementsToPrefix(apr_pool_t *pool, apr_table_t *sourceMap, char *prefixer) {
+	DEBUG_MSG("%s_moveMapElementsToPrefix([apr_pool_t *], [apr_table_t *], %s)...", prefixer);
+
+	maputil_mapPrefix_t data;
+	data.resultMap = apr_table_make(pool, 1);
+	data.prefixer = prefixer;
+
+	apr_table_do(maputil_moveMapElementsToPrefixLoop, &data, sourceMap, NULL);
+
+	DEBUG_MSG("%s_moveMapElementsToPrefix([apr_pool_t *], [apr_table_t *], %s)... DONE", prefixer);
+
+	return data.resultMap;
+}
+
 
 int maputil_mergeMapsLoop(void *data, const char *key, const char *value) {
 	DEBUG_MSG("%s_mergeMapsLoop([void *], %s, %s)...", key, value);
@@ -136,27 +161,11 @@ int maputil_mergeMapsLoop(void *data, const char *key, const char *value) {
 	return 1;
 }
 
-void maputil_mergeMaps(apr_table_t *mergedMap, apr_table_t *mapToMerge) {
-	DEBUG_PUT("%s_mergeMaps([apr_table_t *], [apr_table_t *])...");
-	apr_table_do(maputil_mergeMapsLoop, mergedMap, mapToMerge, NULL);
-	DEBUG_PUT("%s_mergeMaps([apr_table_t *], [apr_table_t *])... DONE");
-}
+apr_table_t *maputil_mergeMaps(apr_pool_t *pool, apr_table_t *mergedMap, apr_table_t *mapToMerge) {
+	DEBUG_PUT("%s_mergeMaps([apr_pool_t *], [apr_table_t *], [apr_table_t *])...");
 
-
-char *maputil_setPrimitivePrefix(apr_pool_t *pool, char *str) {
-	DEBUG_MSG("%s_setPrimitivePrefix([apr_pool_t *], %s)...", str);
-
-	if ( str == NULL ) {
-		return NULL;
-	}
-
-	size_t length = strlen(str);
-
-	char *retStr = apr_pcalloc(pool, sizeof(char) * length + 2);
-	*retStr = JSON2MAP_PRIMITIVE_PREFIXER;
-	memcpy(retStr + 1, str, length + 1);
-	DEBUG_MSG("%s_setPrimitivePrefix([apr_pool_t *], %s): return Value=%s", str, retStr);
-
-	DEBUG_MSG("%s_setPrimitivePrefix([apr_pool_t *], %s)... DONE", str);
-	return retStr;
+	apr_table_t *resultMap = apr_table_clone(pool, mergedMap);
+	apr_table_do(maputil_mergeMapsLoop, resultMap, mapToMerge, NULL);
+	DEBUG_PUT("%s_mergeMaps([apr_pool_t *], [apr_table_t *], [apr_table_t *])... DONE");
+	return resultMap;
 }
