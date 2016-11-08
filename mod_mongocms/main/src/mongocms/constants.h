@@ -2,7 +2,7 @@
 #define __MOD_MONGOCMS_CONSTANTS_H__
 
 // Size for parsing POST attributes
-#define REQUEST_SIZE 1<<20
+#define MAX_ALLOWED_REQUEST_SIZE 1<<22 // 4MB
 
 // standard length of string array
 #define STRING_STD_LENGTH 1<<10

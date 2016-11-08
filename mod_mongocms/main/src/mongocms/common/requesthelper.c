@@ -72,7 +72,7 @@ apr_table_t *requesthelper_readPost(request_rec *request) {
 
 	apr_table_t *map;
 
-	res = ap_parse_form_data(request, NULL, &pairs, (size_t) -1, REQUEST_SIZE);
+	§§    res = ap_parse_form_data(request, NULL, &pairs, (size_t) -1, MAX_ALLOWED_REQUEST_SIZE);
 	if ( res != OK || !pairs ) {
 		return NULL; /* Return NULL if we failed or if there are is no POST data */
 	}
