@@ -6,8 +6,6 @@ use strict;
 use warnings FATAL => 'all';
 
 our $TEST_PUBLISH_HOST = 'http://vmware2';
-our $TEST_USERNAME = 'user';
-our $TEST_PASSWORD = 'password';
 our $DEBUG = 0;
 
 use testlogin;
@@ -17,8 +15,11 @@ use testrating;
 use testdocument;
 use testlists;
 
-my $tokenID = testlogin_login();
-testprofile_getProfile($tokenID);
+my $user = 'testuser_'.int(rand(65535));
+
+testlogin_register($user, 'password');
+my $tokenID = testlogin_login($user, 'password');
+testprofile_getProfile($tokenID, $user);
 testprofile_setProfileWhite($tokenID);
 testprofile_setProfileBlack($tokenID);
 

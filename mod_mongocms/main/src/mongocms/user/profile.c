@@ -4,6 +4,7 @@
 #include "../mod_mongocms.h"
 #include "../common/jsonmapfilter.h"
 #include "../common/requesthelper.h"
+#include "userhandler.h"
 
 
 int profile_get(request_rec *request) {
@@ -17,6 +18,8 @@ int profile_set(request_rec *request) {
 	apr_table_t *requestMap = requesthelper_getPostMap(request, getModuleConfig()->user.propMappingIn, getModuleConfig()->user.propWhitelistIn);
 	apr_table_t *userMap = user_getUserMap(request);
 
+	apr_table_unset(requestMap, USER_MONGO_PROPERTY_USERNAME);
+	apr_table_unset(requestMap, USER_MONGO_PROPERTY_PASSWORD);
 	apr_table_t *newUserMap = maputil_mergeMaps(request->pool, userMap, requestMap);
 	
 	mongo_update(&getModuleConfig()->user.database, request->pool, userMap, newUserMap);

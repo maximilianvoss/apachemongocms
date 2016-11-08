@@ -22,6 +22,11 @@ $ curl -X GET http://[host]/dam/[imageid].json
 $ curl -X POST -b "tokenId=[token] -d "[key]=[value]" http://[host]/dam/[imageid].json
 ```
 
+**Register User**
+```
+$ curl -i -X POST -d "username=user&password=password" http://[host]/user/register.json
+```
+
 **Login**
 ```
 $ curl -i -X POST -d "username=user&password=password" http://[host]/user/login.json

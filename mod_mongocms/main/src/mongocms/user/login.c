@@ -3,11 +3,11 @@
 #include "../common/cookie.h"
 #include "user.h"
 #include "../common/requesthelper.h"
-#include "../common/md5.h"
 #include "../mod_mongocms.h"
+#include "password.h"
+#include "userhandler.h"
 
 #ifdef USER_LOGIN_DEBUG
-
 #include "../common/logging.h"
 
 #define DEBUG_MSG(fmt, ...) LOG_SERVER_DEBUG_FORMAT(fmt, "login", __VA_ARGS__)
@@ -17,12 +17,6 @@
 #define DEBUG_PUT(fmt)
 #endif
 
-char *login_hashPassword(apr_pool_t *pool, const char *user, const char *password) {
-	char *buffer = apr_palloc(pool, sizeof(char) * strlen(user) + strlen(password) + 2);
-	sprintf(buffer, "%s=%s", user, password);
-	return md5_str2md5(pool, buffer);
-}
-
 
 int login_doLogin(request_rec *request) {
 	DEBUG_PUT("%s_doLogin([request_rec *])...");
@@ -30,13 +24,13 @@ int login_doLogin(request_rec *request) {
 	long expireTimeStamp = currentTimeStamp + getModuleConfig()->user.sessionExpirationTime * 3600;
 
 	apr_table_t *requestMap = requesthelper_getPostMap(request, NULL, NULL);
-	const char *user = apr_table_get(requestMap, "username");
-	const char *password = apr_table_get(requestMap, "password");
+	const char *user = apr_table_get(requestMap, USER_MONGO_PROPERTY_USERNAME);
+	const char *password = apr_table_get(requestMap, USER_MONGO_PROPERTY_PASSWORD);
 	if ( user == NULL || password == NULL ) {
 		return HTTP_FORBIDDEN;
 	}
 
-	char *hashedPassword = login_hashPassword(request->pool, user, password);
+	char *hashedPassword = password_hashPassword(request->pool, user, password);
 
 	apr_table_t *usermap = user_checkExistence(request->pool, user, hashedPassword);
 	if ( apr_is_empty_table(usermap) ) {

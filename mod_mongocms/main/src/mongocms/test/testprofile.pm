@@ -3,12 +3,10 @@ use strict;
 use warnings FATAL => 'all';
 
 our $TEST_PUBLISH_HOST;
-our $TEST_USERNAME;
-our $TEST_PASSWORD;
 our $DEBUG;
 
-sub testprofile_getProfile($) {
-    my ($tokenID) = @_;
+sub testprofile_getProfile($$) {
+    my ($tokenID, $user) = @_;
 
     print 'Testcase testprofile_getProfile: ';
 
@@ -20,9 +18,9 @@ sub testprofile_getProfile($) {
     my $statuscode = $1;
     die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
 
-    $output =~ /"\$oid":"(\w+)"/;
-    my $oid = $1;
-    die 'Wrong oid: '.$oid."\n".$output unless ( $oid eq '579e6964cfec53671e77481a' );
+    $output =~ /"u":"(\w+)"/;
+    my $username = $1;
+    die 'Wrong username: '.$username."\n".$output unless ( $username eq $user);
 
     print "PASSED\n";
     print $cmd."\n".$output."\n\n" if ($DEBUG);

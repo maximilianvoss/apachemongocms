@@ -3,14 +3,30 @@ use strict;
 use warnings FATAL => 'all';
 
 our $TEST_PUBLISH_HOST;
-our $TEST_USERNAME;
-our $TEST_PASSWORD;
 our $DEBUG;
 
-sub testlogin_login() {
+
+sub testlogin_register($$) {
+    my ($username, $password) = @_;
+    print 'Testcase testlogin_register: ';
+
+    my $cmd = 'curl -i -X POST -d "username='.$username.'&password='.$password.'" '.$TEST_PUBLISH_HOST.'/user/register.json 2>/dev/null';
+    my $output = `$cmd`;
+
+    # status code
+    $output =~ /HTTP\/1.1 (\d\d\d)/;
+    my $statuscode = $1;
+    die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
+
+    print "PASSED\n";
+    print $cmd."\n".$output."\n\n" if ($DEBUG);
+}1;
+
+sub testlogin_login($$) {
+    my ($username, $password) = @_;
     print 'Testcase testlogin_login: ';
 
-    my $cmd = 'curl -i -X POST -d "username='.$TEST_USERNAME.'&password='.$TEST_PASSWORD.'" '.$TEST_PUBLISH_HOST.'/user/login.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -d "username='.$username.'&password='.$password.'" '.$TEST_PUBLISH_HOST.'/user/login.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

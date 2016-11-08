@@ -4,6 +4,7 @@
 #include "../common/stringutil.h"
 #include "../common/md5.h"
 #include "../mod_mongocms.h"
+#include "userhandler.h"
 
 void session_terminateExpiredSessions(apr_pool_t *pool, apr_table_t *userMap, long currentTimeStamp) {
 	apr_table_t *userUpdate = apr_table_make(pool, 2);
@@ -30,7 +31,7 @@ long session_getSessionCount(apr_pool_t *pool, apr_table_t *userMap) {
 
 char *session_createUserSession(apr_pool_t *pool, apr_table_t *userMap, long currentTimestamp, long expireTimeStamp) {
 	char buffer[BUFFER_SIZE];
-	const char *username = apr_table_get(userMap, "username");
+	const char *username = apr_table_get(userMap, USER_MONGO_PROPERTY_USERNAME);
 	apr_table_t *userMapUpdated = apr_table_clone(pool, userMap);
 
 	long newArrayId = maputil_getMaxArrayId(pool, userMapUpdated, "login-token");

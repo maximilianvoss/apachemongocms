@@ -3,8 +3,6 @@ use strict;
 use warnings FATAL => 'all';
 
 our $TEST_PUBLISH_HOST;
-our $TEST_USERNAME;
-our $TEST_PASSWORD;
 our $DEBUG;
 
 sub testlist_asset_valid($) {

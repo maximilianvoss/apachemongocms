@@ -6,6 +6,7 @@
 #include "../common/mongo.h"
 #include "../common/entryhelper.h"
 #include "../mod_mongocms.h"
+#include "registration.h"
 
 int user_getEntryList(mongo_config_t *mongoConfig, request_rec *request, char *filename);
 
@@ -17,6 +18,8 @@ int user_handler(request_rec *request, char *filename) {
 				return login_doLogin(request);
 			if ( !strcmp(filename, USER_PROFILE_FILENAME) )
 				return profile_set(request);
+			if ( !strcmp(filename, USER_REGISTRATION_FILENAME) )
+				return registration_user(request);
 			if ( !strcmp(filename, USER_LOGOUT_FILENAME) )
 				return logout_destroyUserSession(request);
 			break;

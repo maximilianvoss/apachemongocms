@@ -1,6 +1,7 @@
 #include "user.h"
 #include "../common/cookie.h"
 #include "../mod_mongocms.h"
+#include "userhandler.h"
 
 #ifdef LOGIN_USER_DEBUG
 
@@ -19,8 +20,10 @@ apr_table_t *user_checkExistence(apr_pool_t *pool, const char *username, char *h
 	apr_table_t *queryMap = apr_table_make(pool, 2);
 	apr_table_t *userMap = apr_table_make(pool, 30);
 
-	apr_table_set(queryMap, "username", username);
-	apr_table_set(queryMap, "password", hashedPassword);
+	apr_table_set(queryMap, USER_MONGO_PROPERTY_USERNAME, username);
+	if ( hashedPassword != NULL ) {
+		apr_table_set(queryMap, USER_MONGO_PROPERTY_PASSWORD, hashedPassword);
+	}
 
 	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, pool, queryMap);
 	bson_t *doc;
@@ -89,7 +92,7 @@ apr_table_t *user_getUserMap(request_rec *request) {
 char *user_getUserName(apr_table_t *userMap) {
 	DEBUG_PUT("%s_getUserName([apr_table_t *])...");
 	DEBUG_PUT("%s_getUserName([apr_table_t *])... DONE");
-	return (char *) apr_table_get(userMap, "username");
+	return (char *) apr_table_get(userMap, USER_MONGO_PROPERTY_USERNAME);
 }
 
 char *user_getUserId(apr_table_t *userMap) {
