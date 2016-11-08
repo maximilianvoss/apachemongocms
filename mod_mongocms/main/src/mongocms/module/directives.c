@@ -163,11 +163,11 @@ const char *directives_parserTransformator(cmd_parms *cmd, void *cfg, const char
 
 const char *directives_parserSpecialAssetImageTransform(cmd_parms *cmd, void *cfg, const char *arg1, const char *arg2) {
 
-	if ( getModuleConfig()->asset.image_transform == NULL ) {
-		getModuleConfig()->asset.image_transform = apr_array_make(getModuleConfig()->modulePool, CONFIG_TABLE_INIT_SIZE, sizeof(module_config_transform_t));
+	if ( getModuleConfig()->asset.assetTransform == NULL ) {
+		getModuleConfig()->asset.assetTransform = apr_array_make(getModuleConfig()->modulePool, CONFIG_TABLE_INIT_SIZE, sizeof(module_config_transform_t));
 	}
-	
-	module_config_transform_t *newPtr = apr_array_push(getModuleConfig()->asset.image_transform);
+
+	module_config_transform_t *newPtr = apr_array_push(getModuleConfig()->asset.assetTransform);
 	strncpy(newPtr->name, arg1, STRING_STD_LENGTH);
 	newPtr->width = atoi(arg2);
 	return NULL;

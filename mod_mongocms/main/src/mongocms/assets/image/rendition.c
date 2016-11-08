@@ -11,13 +11,13 @@ uint16_t rendition_getWidthForTransformation(apr_pool_t *pool, char *filePath) {
 	char *transform = stringutil_subString(pool, filename, stringutil_indexOf(filename, '.') + 1,
 	                                       stringutil_lastIndexOf(filename, '.'));
 
-	if ( apr_is_empty_array(getModuleConfig()->asset.image_transform) ) {
+	if ( apr_is_empty_array(getModuleConfig()->asset.assetTransform) ) {
 		return 0;
 	}
 
 	int i;
 	module_config_transform_t element;
-	apr_array_header_t *tmpArray = getModuleConfig()->asset.image_transform;
+	apr_array_header_t *tmpArray = getModuleConfig()->asset.assetTransform;
 	for ( i = 0; i < tmpArray->nalloc; i++ ) {
 		element = APR_ARRAY_IDX(tmpArray, i, module_config_transform_t);
 		if ( !strcmp(element.name, transform) ) {

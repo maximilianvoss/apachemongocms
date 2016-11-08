@@ -43,7 +43,7 @@ typedef struct {
 	const char *assetstorepath;
 	const char *assettmppath;
 
-	apr_array_header_t *image_transform;
+	apr_array_header_t *assetTransform;
 } mongo_config_asset_t;
 
 // type for all user dependent configurations
