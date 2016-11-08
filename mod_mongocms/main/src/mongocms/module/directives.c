@@ -26,7 +26,7 @@ const char AssetMongoCollection[] = "AssetMongoCollection";
 const char AssetStorePath[] = "AssetStorePath";
 const char AssetTmpPath[] = "AssetTmpPath";
 const char AssetQueryList[] = "AssetQueryList";
-const char ImageTransform[] = "ImageTransform";
+const char AssetTransform[] = "AssetTransform";
 
 const char AssetMetadataParamMapping[] = "AssetMetadataParamMapping";
 const char AssetMetadataParamInputWhitelist[] = "AssetMetadataParamInputWhitelist";
@@ -67,7 +67,7 @@ command_rec mongocms_directives[] = {
 		// Assets
 		AP_INIT_TAKE1(AssetStorePath, directives_parserString, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE1(AssetTmpPath, directives_parserString, NULL, RSRC_CONF, ""),
-		AP_INIT_TAKE2(ImageTransform, directives_parserSpecialAssetImageTransform, NULL, RSRC_CONF, ""),
+		AP_INIT_TAKE2(AssetTransform, directives_parserSpecialAssetImageTransform, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE1(AssetMetadataParamInputWhitelist, directives_parserStringList, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE1(AssetMetadataParamOutputWhitelist, directives_parserStringList, NULL, RSRC_CONF, ""),
 		AP_INIT_TAKE2(AssetMetadataParamMapping, directives_parserTransformator, NULL, RSRC_CONF, ""),

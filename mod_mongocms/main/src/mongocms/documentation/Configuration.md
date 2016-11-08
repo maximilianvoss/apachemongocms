@@ -21,7 +21,7 @@ Values which can be set via Apache Configuration while runtime.
 | AssetMongoCollection              | String            | assets                     | Collection in which the asset's data shall be stored           |
 | AssetStorePath                    | Path              | /var/www/html/assetstore   | Path where the assets shall be stored                          |
 | AssetTmpPath                      | Path              | /tmp/asset                 | Path and file-prefix to store assets temporary while uploading |
-| ImageTransform                    | (String Int)[]    | large 1000                 | Setting names for image transformation widths                  |
+| AssetTransform                    | (String Int)[]    | large 1000                 | Setting names for image transformation widths                  |
 | AssetMetadataParamInputWhitelist  | String            | parameter                  | A white listed parameter to input asset properties             |
 | AssetMetadataParamOutputWhitelist | String            | parameter                  | A white listed parameter to output asset properties            |
 | AssetMetadataParamMapping         | (String String)[] | dbkey requestkey           | transforms the key dbkey to requestkey, vice versa             |
