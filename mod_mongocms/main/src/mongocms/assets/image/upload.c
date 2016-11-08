@@ -40,7 +40,7 @@ char *upload_createDestinyFilename(apr_pool_t *pool, const char *path, char *md5
 
 // handle a post request
 int upload_image(mongo_config_t *config, request_rec *request) {
-	char buffer[BUFFER_SIZE];
+	char *buffer;
 	char *newFilePath;
 	char *tmpFile = upload_createTmpFile(request->pool, getModuleConfig()->asset.assettmppath);
 
@@ -64,6 +64,7 @@ int upload_image(mongo_config_t *config, request_rec *request) {
 		apr_table_t *userMap = user_getUserMap(request);
 		apr_table_set(map, MONGO_CREATEDBY, user_getUserName(userMap));
 
+		buffer = apr_pcalloc(request->pool, SMALL_BUFFER_SIZE);
 		sprintf(buffer, "%s#$timestamp#t", MONGO_CREATEDAT);
 		apr_table_set(map, buffer, stringutil_longToString(request->pool, (long) time(NULL)));
 

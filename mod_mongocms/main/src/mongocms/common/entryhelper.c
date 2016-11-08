@@ -51,7 +51,7 @@ apr_table_t *entryhelper_getEntryById(mongo_config_t *config, apr_pool_t *pool, 
 uint8_t entryhelper_isEntryWritable(apr_pool_t *pool, apr_table_t *userMap, apr_table_t *map) {
 	DEBUG_PUT("%s_isEntryWritable([apr_pool_t *], [apr_table_t*], [apr_table_t *])...");
 
-	char key[BUFFER_SIZE];
+	char *key = apr_pcalloc(pool, sizeof(char) * SMALL_BUFFER_SIZE);
 	long maxArrayId = maputil_getMaxArrayId(pool, map, MONGO_PRIVILEGES_WRITING);
 
 	const char *userId = user_getUserId(userMap);
@@ -97,7 +97,8 @@ char *entryhelper_getEntryId(request_rec *request) {
 int entryhelper_updateEntry(request_rec *request, mongo_config_t *mongoConfig, apr_array_header_t *whitelistIn, apr_array_header_t *whitelistOut, apr_table_t *mappingIn, apr_table_t *mappingOut) {
 	DEBUG_PUT("%s_updateEntry([request_rec *], [mongo_config_t *], [apr_array_header_t *], [apr_array_header_t *], [apr_table_t *], [apr_table_t *])...");
 
-	char buffer[BUFFER_SIZE];
+	char *buffer;
+	buffer = apr_pcalloc(request->pool, sizeof(char) * SMALL_BUFFER_SIZE);
 	apr_table_t *userMap = user_getUserMap(request);
 
 	char *documentId = entryhelper_getEntryId(request);
@@ -215,7 +216,7 @@ int entryhelper_getEntryList(request_rec *request, mongo_config_t *mongoConfig, 
 	apr_table_t *documentMap = apr_table_make(request->pool, CONFIG_TABLE_INIT_SIZE);
 	bson_t *doc;
 	int i = 0;
-	char buffer[BUFFER_SIZE];
+	char buffer[20];
 	mongo_cursor_t *cursor = mongo_query(mongoConfig, request->pool, queryList->map);
 	while ( mongoc_cursor_next(cursor->cursor, (const bson_t **) &doc) ) {
 		mongo_bson2map(documentMap, doc);

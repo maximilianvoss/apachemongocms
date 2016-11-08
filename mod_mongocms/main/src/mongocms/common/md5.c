@@ -7,7 +7,7 @@ char *md5_file2md5(apr_pool_t *pool, char *filename) {
 	MD5_CTX c;
 	unsigned char digest[16];
 	char *out = (char *) apr_pcalloc(pool, sizeof(char) * 33);
-	char buffer[BUFFER_SIZE];
+	char *buffer = apr_pcalloc(pool, sizeof(char) * FILE_BUFFER_SIZE);
 
 	MD5_Init(&c);
 
@@ -16,7 +16,7 @@ char *md5_file2md5(apr_pool_t *pool, char *filename) {
 		return NULL;
 	}
 	while ( !feof(stream) ) {
-		size_t size = fread(buffer, sizeof(char), BUFFER_SIZE, stream);
+		size_t size = fread(buffer, sizeof(char), FILE_BUFFER_SIZE, stream);
 		MD5_Update(&c, buffer, size);
 	}
 	fclose(stream);

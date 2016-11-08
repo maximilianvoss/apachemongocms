@@ -30,7 +30,7 @@ long session_getSessionCount(apr_pool_t *pool, apr_table_t *userMap) {
 
 
 char *session_createUserSession(apr_pool_t *pool, apr_table_t *userMap, long currentTimestamp, long expireTimeStamp) {
-	char buffer[BUFFER_SIZE];
+	char *buffer = apr_pcalloc(pool, sizeof(char) * SMALL_BUFFER_SIZE);
 	const char *username = apr_table_get(userMap, USER_MONGO_PROPERTY_USERNAME);
 	apr_table_t *userMapUpdated = apr_table_clone(pool, userMap);
 

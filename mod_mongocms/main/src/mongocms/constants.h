@@ -2,10 +2,13 @@
 #define __MOD_MONGOCMS_CONSTANTS_H__
 
 // Size for parsing POST attributes
-#define MAX_ALLOWED_REQUEST_SIZE 1<<22 // 4MB
+#define MAX_ALLOWED_REQUEST_SIZE 1<<22  // 4MB
 
-// Standard Buffer size
-#define BUFFER_SIZE 1<<12
+// Buffer size to handle small things
+#define SMALL_BUFFER_SIZE 1<<10         // 1kB
+
+// Buffer size to handle files
+#define FILE_BUFFER_SIZE 1<<18          // 256kB
 
 // Init size of config arrays
 #define CONFIG_ARRAY_INIT_SIZE 5

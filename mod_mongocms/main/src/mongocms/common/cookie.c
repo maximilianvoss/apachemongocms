@@ -15,8 +15,7 @@
 void cookie_setCookie(request_rec *request, char *name, char *value, time_t expireDate, char *domain, char *path) {
 	DEBUG_MSG("%s_setCookie([request_rec *], %s, %s, %ld, %s, %s)...", name, value, expireDate, domain, path);
 
-	char buffer[BUFFER_SIZE];
-
+	char *buffer = apr_pcalloc(request->pool, sizeof(char) * SMALL_BUFFER_SIZE);
 	char *ptr = buffer;
 
 	if ( name != NULL ) {
@@ -68,7 +67,7 @@ void cookie_setCookie(request_rec *request, char *name, char *value, time_t expi
 
 char *cookie_getCookie(request_rec *request, char *name) {
 	DEBUG_MSG("%s_getCookie([request_rec *], %s)...", name);
-	char buffer[BUFFER_SIZE];
+	char *buffer;
 	char *cookieString = (char *) apr_table_get(request->headers_in, "Cookie");
 
 	if ( cookieString == NULL ) {
@@ -76,8 +75,9 @@ char *cookie_getCookie(request_rec *request, char *name) {
 		return NULL;
 	}
 
-	strcpy(buffer, name);
 	int nameLength = strlen(name);
+	buffer = apr_pcalloc(request->pool, sizeof(char) * nameLength + 3);
+	strcpy(buffer, name);
 	buffer[nameLength + 1] = '=';
 	buffer[nameLength + 2] = '\0';
 

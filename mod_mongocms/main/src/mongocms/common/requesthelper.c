@@ -23,17 +23,17 @@ apr_status_t requesthelper_saveRequestToFile(request_rec *request, const char *f
 	// save to file.
 	status = ap_setup_client_block(request, REQUEST_CHUNKED_DECHUNK);
 	if ( status == OK ) {
-		char buf[BUFFER_SIZE];
+		char *buffer = apr_pcalloc(request->pool, FILE_BUFFER_SIZE);
 		long bytes;
 
-		while ( ( ( bytes = ap_get_client_block(request, buf, BUFFER_SIZE) ) > 0 ) && ( length > count ) ) {
+		while ( ( ( bytes = ap_get_client_block(request, buffer, FILE_BUFFER_SIZE) ) > 0 ) && ( length > count ) ) {
 			apr_size_t wr = 0;
 			if ( count + bytes > length ) {
 				bytes = length - count;
 			}
 			while ( wr < bytes ) {
 				apr_size_t w = bytes - wr;
-				status = apr_file_write(file, buf, &w);
+				status = apr_file_write(file, buffer, &w);
 				if ( status != APR_SUCCESS ) goto FINALLY;
 				wr += w;
 			}

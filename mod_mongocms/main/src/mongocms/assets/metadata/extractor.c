@@ -13,6 +13,9 @@ double extractor_calcGPSPos(char *position, const char *reference);
 double extractor_calcGPSPos(char *position, const char *reference) {
 	int orientation = 1;
 	float gpsPos = 0;
+	int i;
+	char *buffer;
+	
 	if ( position != NULL && reference != NULL ) {
 
 		if ( *reference == 'S' || *reference == 'W' ) {
@@ -23,8 +26,7 @@ double extractor_calcGPSPos(char *position, const char *reference) {
 		stringutil_removeWhitespaces(position);
 		stringutil_splitTokens(tokens, position, ',', 3);
 
-		int i;
-		char buffer[BUFFER_SIZE];
+		buffer = calloc(sizeof(char), SMALL_BUFFER_SIZE);
 		for ( i = 0; i < 3; i++ ) {
 			stringutil_getToken(&tokens[i], position, buffer);
 			int divider = stringutil_indexOf(buffer, '/');
@@ -42,6 +44,7 @@ double extractor_calcGPSPos(char *position, const char *reference) {
 				gpsPos += value;
 			}
 		}
+		free(buffer);
 	}
 	return gpsPos * orientation;
 }

@@ -128,10 +128,10 @@ long maputil_getMaxArrayId(apr_pool_t *pool, apr_table_t *map, char *matchString
 }
 
 int maputil_moveMapElementsToPrefixLoop(void *data, const char *key, const char *value) {
-	char buffer[BUFFER_SIZE];
+	char buffer[SMALL_BUFFER_SIZE];
 	maputil_mapPrefix_t *container = (maputil_mapPrefix_t *) data;
 
-	sprintf(buffer, "%s%s", container->prefixer, key);
+	snprintf(buffer, SMALL_BUFFER_SIZE, "%s%s", container->prefixer, key);
 	apr_table_set(container->resultMap, buffer, value);
 
 	return 1;

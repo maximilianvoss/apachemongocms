@@ -128,12 +128,12 @@ int rendition_get(mongo_config_t *config, request_rec *request, char *filename) 
 		// calculate image
 		rendition_createRendition(path, filename, width, 0);
 
-		char fbuffer[BUFFER_SIZE];
+		char *buffer = apr_pcalloc(request->pool, FILE_BUFFER_SIZE);
 		FILE *file;
 		if ( fileutil_exists(filename) ) {
 			file = fopen(filename, "r");
-			while ( fread(fbuffer, 1, BUFFER_SIZE, file) ) {
-				ap_rwrite(fbuffer, BUFFER_SIZE, request);
+			while ( fread(buffer, 1, FILE_BUFFER_SIZE, file) ) {
+				ap_rwrite(buffer, FILE_BUFFER_SIZE, request);
 			}
 			fclose(file);
 			DEBUG_MSG("%s_get([mongo_config_t *], [request_rec *], %s)... DONE", filename);
