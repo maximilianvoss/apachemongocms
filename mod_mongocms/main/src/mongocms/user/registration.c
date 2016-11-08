@@ -47,3 +47,38 @@ int registration_user(request_rec *request) {
 	DEBUG_PUT("%s_user([request_rec *])... DONE");
 	return OK;
 }
+
+
+int registration_removeUser(request_rec *request) {
+	DEBUG_PUT("%s_removeUser([request_rec *])...");
+	apr_table_t *requestMap = requesthelper_getPostMap(request, getModuleConfig()->user.propMappingIn, getModuleConfig()->user.propWhitelistIn);
+
+	const char *user = apr_table_get(requestMap, USER_MONGO_PROPERTY_USERNAME);
+	const char *password = apr_table_get(requestMap, USER_MONGO_PROPERTY_PASSWORD);
+
+	if ( user == NULL || password == NULL ) {
+		DEBUG_PUT("%s_removeUser([request_rec *]): Bad Request");
+		DEBUG_PUT("%s_removeUser([request_rec *])... DONE");
+		return HTTP_BAD_REQUEST;
+	}
+
+	char *hashedPassword = password_hashPassword(request->pool, user, password);
+
+	apr_table_t *usermap = user_checkExistence(request->pool, user, hashedPassword);
+	if ( apr_is_empty_table(usermap) ) {
+		ap_rputs("{\"Status\":\"user doesnt exist\"}", request);
+		DEBUG_PUT("%s_removeUser([request_rec *]): User doesnt exist");
+		DEBUG_PUT("%s_removeUser([request_rec *])... DONE");
+		return HTTP_CONFLICT;
+	}
+
+	apr_table_t *deleteEntryMap = apr_table_make(request->pool, 2);
+	apr_table_set(deleteEntryMap, USER_MONGO_PROPERTY_USERNAME, user);
+	apr_table_set(deleteEntryMap, USER_MONGO_PROPERTY_PASSWORD, hashedPassword);
+
+	mongo_delete(&getModuleConfig()->user.database, request->pool, deleteEntryMap);
+
+	ap_rputs("{\"Status\":\"user removed\"}", request);
+	DEBUG_PUT("%s_removeUser([request_rec *])... DONE");
+	return OK;
+}

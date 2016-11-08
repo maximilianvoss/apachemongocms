@@ -1,5 +1,7 @@
 # Remarks
 
+##Assets
+
 **Upload of assets**
 ```
 $ curl -i -X POST -b "tokenId=[token]" --upload-file [filename] http://[host]/dam/
@@ -22,6 +24,8 @@ $ curl -X GET http://[host]/dam/[imageid].json
 $ curl -X POST -b "tokenId=[token] -d "[key]=[value]" http://[host]/dam/[imageid].json
 ```
 
+##User
+
 **Register User**
 ```
 $ curl -i -X POST -d "username=user&password=password" http://[host]/user/register.json
@@ -35,6 +39,11 @@ $ curl -i -X POST -d "username=user&password=password" http://[host]/user/login.
 **Logout**
 ```
 $ curl -i -X POST -b "tokenId=[token]" http://[host]/user/logout.json
+```
+
+**Unregister User**
+```
+$ curl -i -X POST -b "tokenId=[token]" -d "username=user&password=password" http://[host]/user/unregister.json
 ```
 
 **Get Profile**

@@ -131,6 +131,28 @@ char *mongo_commit(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
 	return documentId;
 }
 
+// delete a mongo document
+void mongo_delete(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
+	DEBUG_PUT("%s_delete([mongo_config_t *], [apr_pool_t *], [apr_table_t *])...");
+
+	bson_error_t error;
+	mongoc_client_t *client = mongo_connect(config);
+	mongoc_collection_t *collection = mongo_getCollection(config, client);
+
+	bson_t *doc = mongo_map2bson(pool, map);
+	DEBUG_MSG("%s_delete([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): Delete Document=%s", bson_as_json(doc, NULL));
+
+	if ( !mongoc_collection_remove(collection, MONGOC_REMOVE_SINGLE_REMOVE, doc, NULL, &error) ) {
+		DEBUG_PUT("%s_delete([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): was not able to delete document");
+	}
+
+	DEBUG_PUT("%s_delete([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): done deleting");
+	bson_destroy(doc);
+
+	mongo_disconnect(config, client, collection);
+	DEBUG_PUT("%s_delete([mongo_config_t *], [apr_pool_t *], [apr_table_t *])... DONE");
+}
+
 // query a document
 mongo_cursor_t *mongo_query(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
 	DEBUG_PUT("%s_query([mongo_config_t *], [apr_pool_t *], [apr_table_t *])...");

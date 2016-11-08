@@ -24,6 +24,7 @@ mongoc_collection_t *mongo_getCollection(mongo_config_t *config, mongoc_client_t
 mongo_cursor_t *mongo_query(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map);
 void mongo_destroyCursor(mongo_cursor_t *cursorObj);
 char *mongo_commit(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map);
+void mongo_delete(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map);
 void mongo_update(mongo_config_t *config, apr_pool_t *pool, apr_table_t *oldMap, apr_table_t *newMap);
 void mongo_bson2map(apr_table_t *map, const bson_t *bson);
 void mongo_destroy(mongo_config_t *config);

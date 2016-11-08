@@ -16,9 +16,10 @@ use testdocument;
 use testlists;
 
 my $user = 'testuser_'.int(rand(65535));
+my $password = 'userpassword_'.int(rand(65535));
 
-testlogin_register($user, 'password');
-my $tokenID = testlogin_login($user, 'password');
+testlogin_register($user, $password);
+my $tokenID = testlogin_login($user, $password);
 testprofile_getProfile($tokenID, $user);
 testprofile_setProfileWhite($tokenID);
 testprofile_setProfileBlack($tokenID);
@@ -47,3 +48,6 @@ testlist_document_valid($tokenID);
 testlist_document_invalid($tokenID);
 
 testlogin_logout($tokenID);
+
+$tokenID = testlogin_login($user, $password);
+testlogin_remove($user, $password, $tokenID);

@@ -20,6 +20,8 @@ int user_handler(request_rec *request, char *filename) {
 				return profile_set(request);
 			if ( !strcmp(filename, USER_REGISTRATION_FILENAME) )
 				return registration_user(request);
+			if ( !strcmp(filename, USER_UNREGISTRATION_FILENAME) )
+				return registration_removeUser(request);
 			if ( !strcmp(filename, USER_LOGOUT_FILENAME) )
 				return logout_destroyUserSession(request);
 			break;

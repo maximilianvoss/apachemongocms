@@ -22,6 +22,7 @@ sub testlogin_register($$) {
     print $cmd."\n".$output."\n\n" if ($DEBUG);
 }1;
 
+
 sub testlogin_login($$) {
     my ($username, $password) = @_;
     print 'Testcase testlogin_login: ';
@@ -57,6 +58,23 @@ sub testlogin_logout($) {
     print 'Testcase testlogin_logout: ';
 
     my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/user/logout.json 2>/dev/null';
+    my $output = `$cmd`;
+
+    # status code
+    $output =~ /HTTP\/1.1 (\d\d\d)/;
+    my $statuscode = $1;
+    die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
+
+    print "PASSED\n";
+    print $cmd."\n".$output."\n\n" if ($DEBUG);
+}1;
+
+
+sub testlogin_remove($$$) {
+    my ($username, $password, $tokenID) = @_;
+    print 'Testcase testlogin_remove: ';
+
+    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "username='.$username.'&password='.$password.'" '.$TEST_PUBLISH_HOST.'/user/unregister.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

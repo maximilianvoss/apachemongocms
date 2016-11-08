@@ -6,5 +6,6 @@
 #define USER_REGISTRATION_DEBUG
 
 int registration_user(request_rec *request);
+int registration_removeUser(request_rec *request);
 
 #endif

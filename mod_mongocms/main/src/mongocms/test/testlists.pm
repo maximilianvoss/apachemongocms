@@ -54,7 +54,7 @@ sub testlist_user_valid($) {
     my $statuscode = $1;
     die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
 
-    die 'Didn\'t ouput a result' unless ( $output =~ /{"result":/);
+    die 'Didn\'t ouput a result\n'.$output unless ( $output =~ /{"result":/);
 
     print "PASSED\n";
     print $cmd."\n".$output."\n\n" if ($DEBUG);
