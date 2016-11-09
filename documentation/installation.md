@@ -1,4 +1,6 @@
-# Server Installation
+# Installation
+
+## Pre-requisite installation
 
 Starting Point is a Ubuntu 16.04 LTS Server version
 
@@ -14,10 +16,9 @@ See: [https://docs.mongodb.com/master/tutorial/install-mongodb-on-ubuntu/?_ga=1.
 # echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
 # apt-get update
 # apt-get install mongodb-org
-# cat >/lib/systemd/system/mongod.service
 ```
 
-Paste Content:
+Paste Content to: */lib/systemd/system/mongod.service*
 ```
 [Unit]
 Description=High-performance, schema-free document-oriented database
@@ -33,11 +34,13 @@ ExecStart=/usr/bin/mongod --quiet --config /etc/mongod.conf
 WantedBy=multi-user.target
 ```
 
+**Start the MongoDB**
+
 ```
 # service mongod start
 ```
 
-**Install Apache2 HTTP**
+**Install Apache2 with development dependencies**
 ```
 # apt-get install apache2 apache2-dev
 ```
@@ -73,7 +76,7 @@ WantedBy=multi-user.target
 # make install
 ```
 
-**Install libmongoC**
+**Install mongo-c-driver**
 ```
 # curl -L -O https://github.com/mongodb/mongo-c-driver/releases/download/1.3.5/mongo-c-driver-1.3.5.tar.gz
 # tar -xvzf mongo-c-driver-1.3.5.tar.gz
@@ -82,26 +85,20 @@ WantedBy=multi-user.target
 # make
 # make install
 ```
- 
-# Compile Code
-```
-$ cd ~/mongocms/scripts/
-$ ./build.sh
-```
 
-# Make things work
+## Prepare the module
 
-**Change LDConfig Paths**
+**Change LDConfig paths to ensure modules can be loaded**
+
+Add following lines to: */etc/ld.so.conf.d/mongocms.conf*
 ```
-# cat >/etc/ld.so.conf.d/mongocms.conf
-
 # mongo cms modules
 /usr/local/mongocms/lib
 
 # ldconfig
 ```
 
-**Create paths**
+**Create paths where everything is going to happen**
 ```
 # mkdir -p /var/www/html/assetstore
 # mkdir -p /var/www/html/dam
@@ -109,7 +106,7 @@ $ ./build.sh
 # chown -R www-data.www-data /var/www/html/*
 ```
 
-**Config Apache2 HTTP**
+**Add the module to the Apache2**
 ```
 # cd /etc/apache2/mods-available/
 # ln -sf ~cms/mongocms/httpconfig/* .
@@ -117,10 +114,15 @@ $ ./build.sh
 # service apache2 restart
 ```
 
-**Add paths to apache2.conf**
+**Adjustment of apache2.conf**
 ```
-# vi /etc/apache2/apache2.conf
-
 <Directory /var/www/html>
         SetHandler mongocms
 </Directory>
+```
+
+## Compile Code
+```
+$ cd ~/mongocms/scripts/
+$ ./build.sh
+```
