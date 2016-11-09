@@ -270,12 +270,6 @@ int entryhelper_deleteEntry(request_rec *request, mongo_config_t *mongoConfig, a
 	}
 	
 	apr_table_t *documentMap = entryhelper_getEntryById(mongoConfig, request->pool, documentId);
-	if ( documentId == NULL ) {
-		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): entry is not set");
-		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
-		return HTTP_NOT_FOUND;
-	}
-	
 	if ( !entryhelper_isEntryWritable(request->pool, userMap, documentMap) ) {
 		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): Entry is not writable to user");
 		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
