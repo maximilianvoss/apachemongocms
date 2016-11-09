@@ -106,6 +106,10 @@ apr_table_t *maputil_mapMap(apr_pool_t *pool, apr_table_t *sourceMap, apr_table_
 		return data.resultMap;
 	} else {
 		DEBUG_PUT("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *]): One of the maps is empty");
+		DEBUG_MSG("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *]): sourceMap == NULL = %d", (sourceMap == NULL));
+		DEBUG_MSG("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *]): mappingMap == NULL = %d", (mappingMap == NULL));
+		DEBUG_MSG("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *]): sourceMap is empty = %d", (apr_is_empty_table(sourceMap)));
+		DEBUG_MSG("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *]): mappingMap is empty = %d", (apr_is_empty_table(mappingMap)));
 		DEBUG_PUT("%s_maputil_mapMap([apr_pool_t *], [apr_table_t *], [apr_table_t *])... DONE");
 		return sourceMap;
 	}
@@ -115,6 +119,13 @@ apr_table_t *maputil_mapMap(apr_pool_t *pool, apr_table_t *sourceMap, apr_table_
 long maputil_getMaxArrayId(apr_pool_t *pool, apr_table_t *map, char *matchString) {
 	DEBUG_MSG("%s_getMaxArrayId([apr_pool_t *], [apr_table_t *], %s)...", matchString);
 
+	if ( apr_is_empty_table(map)) {
+		DEBUG_MSG("%s_getMaxArrayId([apr_pool_t *], [apr_table_t *], %s): table is empty", matchString);
+		DEBUG_MSG("%s_getMaxArrayId([apr_pool_t *], [apr_table_t *], %s)... DONE", matchString);
+		return -1;
+	}
+	
+	
 	char *keyStr = apr_pcalloc(pool, strlen(matchString) + 4);
 	sprintf(keyStr, "%s%c%c%c", matchString, JSON2MAP_MAP_ARRAY_START, JSON2MAP_MAP_ARRAY_COUNT, JSON2MAP_MAP_ARRAY_END);
 

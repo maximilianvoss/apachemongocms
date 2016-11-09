@@ -10,7 +10,7 @@ $ curl -i -X PUT -b "tokenId=[token]" --upload-file [filename] http://[host]/dam
 
 **Query on Asset-Store**
 ```
-$ curl -X GET -b "tokenId=[token] http://[host]/dam/list.[listname].json
+$ curl -X GET -b "tokenId=[token]" http://[host]/dam/list.[listname].json
 ```
 
 **Get image**
@@ -26,29 +26,29 @@ $ curl -X GET http://[host]/dam/[imageid].json
 
 **Update image property**
 ```
-$ curl -X POST -b "tokenId=[token] -d "[key]=[value]" http://[host]/dam/[imageid].json
+$ curl -X POST -b "tokenId=[token]" -d "[key]=[value]" http://[host]/dam/[imageid].json
 ```
 
 ##Documents
 
 **Create new document**
 ```
-$ curl -X POST -b "tokenId=[token] -d "[key]=[value]" http://[host]/document.json
+$ curl -X POST -b "tokenId=[token]" -d "[key]=[value]" http://[host]/document.json
 ```
 
 **Query on Document-Store**
 ```
-$ curl -X GET -b "tokenId=[token] http://[host]/list.[listname].json
+$ curl -X GET -b "tokenId=[token]" http://[host]/list.[listname].json
 ```
 
 **Get document**
 ```
-$ curl -X GET -b "tokenId=[token] http://[host]/[documentId].json
+$ curl -X GET -b "tokenId=[token]" http://[host]/[documentId].json
 ```
 
 **Update document**
 ```
-$ curl -X POST -b "tokenId=[token] -d "[key]=[value]" http://[host]/[documentId].json
+$ curl -X POST -b "tokenId=[token]" -d "[key]=[value]" http://[host]/[documentId].json
 ```
 
 ##User
@@ -70,7 +70,7 @@ $ curl -i -X POST -b "tokenId=[token]" http://[host]/user/logout.json
 
 **Query on User-Store**
 ```
-$ curl -X GET -b "tokenId=[token] http://[host]/user/list.[listname].json
+$ curl -X GET -b "tokenId=[token]" http://[host]/user/list.[listname].json
 ```
 
 **Get Profile**

@@ -14,5 +14,6 @@ int entryhelper_updateEntry(request_rec *request, mongo_config_t *mongoConfig, a
 int entryhelper_getEntry(request_rec *request, mongo_config_t *mongoConfig, apr_array_header_t *whitelistOut, apr_table_t *mappingOut);
 int entryhelper_getEntryList(request_rec *request, mongo_config_t *mongoConfig, mongo_config_query_list_t *queryList, apr_array_header_t *whitelistIn, apr_array_header_t *whitelistOut, apr_table_t
 *mappingIn, apr_table_t *mappingOut, char *filename);
+int entryhelper_deleteEntry(request_rec *request, mongo_config_t *mongoConfig, apr_table_t *map );
 
 #endif

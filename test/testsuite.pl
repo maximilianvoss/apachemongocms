@@ -29,18 +29,25 @@ testdocument_getDocument($documentId);
 testdocument_updateDocument($tokenID, $documentId);
 testlist_document_valid($tokenID, $user);
 testlist_document_invalid($tokenID);
+testdocument_deleteDocumentPOST($tokenID, $documentId);
+$documentId = testdocument_newDocument($tokenID);
+testdocument_deleteDocumentGET($tokenID, $documentId);
 
 my $imagePUT = testimage_uploadPUT($tokenID);
 testimage_getValidRendition($imagePUT);
 testimage_getInValidRendition($imagePUT);
 testimage_getValidRenditionPNG($imagePUT);
 testimage_getProperties($imagePUT);
+testimage_setProperties($tokenID, $imagePUT);
+testimage_deletePOST($tokenID, $imagePUT);
 
 my $imagePOST = testimage_uploadPOST($tokenID);
 testimage_getValidRendition($imagePOST);
 testimage_getInValidRendition($imagePOST);
 testimage_getValidRenditionPNG($imagePOST);
 testimage_getProperties($imagePOST);
+testimage_setProperties($tokenID, $imagePOST);
+testimage_deleteGET($tokenID, $imagePOST);
 
 testlist_asset_valid($tokenID);
 testlist_asset_invalid($tokenID);

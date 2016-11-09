@@ -3,6 +3,7 @@
 #include "user.h"
 #include "userhandler.h"
 #include "password.h"
+#include "../mod_mongocms.h"
 
 #ifdef USER_REGISTRATION_DEBUG
 

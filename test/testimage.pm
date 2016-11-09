@@ -133,3 +133,63 @@ sub testimage_getProperties($) {
     print "PASSED\n";
     print $cmd."\n".$output."\n\n" if ($DEBUG);
 }1;
+
+
+
+sub testimage_setProperties($$) {
+    my ($tokenID, $imageId) = @_;
+
+    print 'Testcase testimage_setProperties: ';
+
+    my $cmd = 'curl -i -X POST -d \'param1=value3&param2=value4\' -b "tokenId='.$tokenID.'" '.$HOST.'/dam/'.$imageId.'.json 2>/dev/null';
+    my $output = `$cmd`;
+
+    # status code
+    $output =~ /HTTP\/1.1 (\d\d\d)/;
+    my $statuscode = $1;
+    die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
+
+    die 'Was not able to find param1 with correct value'."\n".$output unless ( $output =~ /"param1":"value3"/);
+    die 'Was not able to find param2 with correct value'."\n".$output unless ( $output =~ /"param2":"value4"/);
+
+    $output =~ /"myId\":\"(\w+)"/;
+    my $oid = $1;
+
+    print "PASSED\n";
+    print $cmd."\n".$output."\n\n" if ($DEBUG);
+    return $oid;
+}1;
+
+sub testimage_deletePOST($$) {
+    my ($tokenID, $imageId) = @_;
+
+    print 'Testcase testimage_deletePOST: ';
+
+    my $cmd = 'curl -i -X POST -d \'myId=' . $imageId . '\' -b "tokenId='.$tokenID.'" '.$HOST.'/dam/delete.json 2>/dev/null';
+    my $output = `$cmd`;
+    
+    # status code
+    $output =~ /HTTP\/1.1 (\d\d\d)/;
+    my $statuscode = $1;
+    die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
+
+    print "PASSED\n";
+    print $cmd."\n".$output."\n\n" if ($DEBUG);
+}1;
+
+sub testimage_deleteGET($$) {
+    my ($tokenID, $imageId) = @_;
+
+    print 'Testcase testimage_deleteGET: ';
+
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/dam/delete.json?myId=' . $imageId . ' 2>/dev/null';
+    my $output = `$cmd`;
+
+    # status code
+    $output =~ /HTTP\/1.1 (\d\d\d)/;
+    my $statuscode = $1;
+    die 'Wrong statuscode: '.$statuscode."\n".$output unless ( $statuscode eq 200 );
+
+    print "PASSED\n";
+    print $cmd."\n".$output."\n\n" if ($DEBUG);
+}1;

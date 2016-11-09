@@ -243,9 +243,45 @@ int entryhelper_getEntryList(request_rec *request, mongo_config_t *mongoConfig, 
 		i++;
 	}
 	mongo_destroyCursor(cursor);
-
-	ap_rprintf(request, "%s\n", jsonhandling_aprmap2json(request->pool, resultMap));
+	
+	if ( apr_is_empty_table(resultMap) ) {
+		ap_rputs("{\"result\":{} }", request);
+	} else {
+		ap_rprintf(request, "%s\n", jsonhandling_aprmap2json(request->pool, resultMap));
+	}
 
 	DEBUG_MSG("%s_getEntryList([request_rec *], [mongo_config_t *], [mongo_config_query_list_t *] [apr_array_header_t *], [apr_table_t *], %s)... DONE", filename);
+	return OK;
+}
+
+
+int entryhelper_deleteEntry(request_rec *request, mongo_config_t *mongoConfig, apr_table_t *map ) {
+	DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])...");
+
+	apr_table_t *userMap = user_getUserMap(request);
+
+	char *documentId = (char *) apr_table_get(map, "_id#$oid");
+	if ( documentId == NULL ) {
+		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): entry is not set");
+		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
+		return HTTP_NOT_FOUND;
+	}
+	
+	apr_table_t *documentMap = entryhelper_getEntryById(mongoConfig, request->pool, documentId);
+	if ( documentId == NULL ) {
+		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): entry is not set");
+		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
+		return HTTP_NOT_FOUND;
+	}
+	
+	if ( !entryhelper_isEntryWritable(request->pool, userMap, documentMap) ) {
+		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): Entry is not writable to user");
+		DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
+		return HTTP_FORBIDDEN;
+	}
+	
+	mongo_delete(mongoConfig, request->pool, documentMap);
+	
+	DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
 	return OK;
 }
