@@ -19,6 +19,3 @@
 # Maven build dir
 target
 
-
-# other files
-sync.sh
