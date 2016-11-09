@@ -204,7 +204,7 @@ char *stringutil_replaceVariables(apr_pool_t *pool, char *str, apr_table_t *map)
 
 	char variableName[255];
 	char *ptr = str;
-	char *ptr2 = variableName;
+	char *ptr2;
 	const char *variableValue;
 	char *buffer = apr_pcalloc(pool, SMALL_BUFFER_SIZE);
 	char *ptr3 = buffer;
