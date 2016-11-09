@@ -166,7 +166,8 @@ mongo_cursor_t *mongo_query(mongo_config_t *config, apr_pool_t *pool, apr_table_
 	DEBUG_MSG("%s_query([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): Querying: %s", bson_as_json(query, NULL));
 	mongoc_cursor_t *cursor = mongoc_collection_find(collection, MONGOC_QUERY_NONE, 0, 0, 0, query,
 	                                                 NULL, NULL);
-
+	bson_destroy(query);
+	
 	mongo_cursor_t *cursorObj = apr_pcalloc(pool, sizeof(mongo_cursor_t));
 	cursorObj->config = config;
 	cursorObj->client = client;
@@ -175,6 +176,25 @@ mongo_cursor_t *mongo_query(mongo_config_t *config, apr_pool_t *pool, apr_table_
 
 	DEBUG_PUT("%s_query([mongo_config_t *], [apr_pool_t *], [apr_table_t *])... DONE");
 	return cursorObj;
+}
+
+// count documents
+int64_t mongo_count(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
+	DEBUG_PUT("%s_count([mongo_config_t *], [apr_pool_t *], [apr_table_t *])...");
+
+	bson_t *query;
+
+	mongoc_client_t *client = mongo_connect(config);
+	mongoc_collection_t *collection = mongo_getCollection(config, client);
+
+	query = mongo_map2bson(pool, map);
+	DEBUG_MSG("%s_count([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): Querying: %s", bson_as_json(query, NULL));
+	int64_t count = mongoc_collection_count (collection, MONGOC_QUERY_NONE, query, 0, 0, NULL, NULL);
+	DEBUG_MSG("%s_count([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): Count: %ld", count);
+	bson_destroy(query);
+	
+	DEBUG_PUT("%s_count([mongo_config_t *], [apr_pool_t *], [apr_table_t *])... DONE");
+	return count;
 }
 
 // destroy the db cursor

@@ -3,14 +3,16 @@
 #include "stringutil.h"
 #include "../user/user.h"
 #include "jsonhandling.h"
-
-#ifdef COMMON_ENTRYHELPER_DEBUG
-
-#include "logging.h"
 #include "maputil.h"
 #include "jsonmapfilter.h"
 #include "requesthelper.h"
 #include "../libs/json2map/config.h"
+#include "mongo.h"
+
+#ifdef COMMON_ENTRYHELPER_DEBUG
+
+#include "logging.h"
+
 
 #define DEBUG_MSG(fmt, ...) LOG_SERVER_DEBUG_FORMAT(fmt, "entryhelper", __VA_ARGS__)
 #define DEBUG_PUT(fmt) LOG_SERVER_DEBUG_FORMAT(fmt, "entryhelper")
@@ -281,6 +283,19 @@ int entryhelper_deleteEntry(request_rec *request, mongo_config_t *mongoConfig, a
 	}
 	
 	mongo_delete(mongoConfig, request->pool, documentMap);
+	
+	const char *filename = apr_table_get(documentMap, MONGO_PROPERTY_FILENAME);
+	if ( filename != NULL ) {
+		DEBUG_MSG("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): have to check reference file: %s", filename);
+		apr_table_t *queryFilename = apr_table_make(request->pool, 1);
+		apr_table_set(queryFilename, MONGO_PROPERTY_FILENAME, filename);
+		
+		if ( !mongo_count(mongoConfig, request->pool, queryFilename)) {
+			stringutil_replaceChar((char *)filename, '\\', '/');
+			DEBUG_MSG("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *]): deleting file: %s", filename);
+			unlink(filename);
+		}
+	}
 	
 	DEBUG_PUT("%s_deleteEntry([request_rec *], [mongo_config_t *], [apr_table_t *])... DONE");
 	return OK;

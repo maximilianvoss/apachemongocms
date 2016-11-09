@@ -20,6 +20,7 @@
 #define MONGO_PROPERTY_OID "_id#$oid"
 #define MONGO_PROPERTY_USERNAME "username"
 #define MONGO_PROPERTY_PASSWORD "password"
+#define MONGO_PROPERTY_FILENAME "filename"
 #define MONGO_PROPERTY_CREATEDBY "createdBy"
 #define MONGO_PROPERTY_CREATEDAT "createdAt"
 #define MONGO_PROPERTY_MODIFIEDBY "modifiedBy"

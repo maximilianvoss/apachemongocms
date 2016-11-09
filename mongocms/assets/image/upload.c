@@ -50,7 +50,7 @@ int upload_image(mongo_config_t *config, request_rec *request) {
 		newFilePath = upload_createDestinyFilename(request->pool, getModuleConfig()->asset.assetstorepath, md5hash);
 
 		apr_table_t *map = apr_table_make(request->pool, 10);
-		apr_table_set(map, "file", newFilePath);
+		apr_table_set(map, MONGO_PROPERTY_FILENAME, newFilePath);
 
 		if ( !fileutil_exists(newFilePath) ) {
 			fileutil_mkpath(newFilePath, 0700);

@@ -122,7 +122,7 @@ int rendition_get(mongo_config_t *config, request_rec *request, char *filename) 
 	char *assetId = entryhelper_getEntryId(request);
 	apr_table_t *assetMap = entryhelper_getEntryById(config, request->pool, assetId);
 	if ( !apr_is_empty_table(assetMap) ) {
-		char *path = stringutil_escapeString(request->pool, (char *) apr_table_get(assetMap, "file"));
+		char *path = stringutil_escapeString(request->pool, (char *) apr_table_get(assetMap, MONGO_PROPERTY_FILENAME));
 		stringutil_replaceChar(path, '\\', '/');
 
 		// calculate image

@@ -26,6 +26,7 @@ void mongo_destroyCursor(mongo_cursor_t *cursorObj);
 char *mongo_commit(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map);
 void mongo_delete(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map);
 void mongo_update(mongo_config_t *config, apr_pool_t *pool, apr_table_t *oldMap, apr_table_t *newMap);
+int64_t mongo_count(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map);
 void mongo_bson2map(apr_table_t *map, const bson_t *bson);
 void mongo_destroy(mongo_config_t *config);
 uint8_t mongo_isOidValid(char *oid);
