@@ -7,11 +7,11 @@ To set up the database following schema can be used:
 
 **Documents**
 
-| Key                  | Type   | Example                    | Description                                             |   
-| -------------------- | ------ | -------------------------- | ------------------------------------------------------- |
-| DocMongoURI          | String | mongodb://localhost:27017/ | Setting the URI for the document's MongoDB              |
-| DocMongoDB           | String | mongocms                   | DB in which the document's data shall be stored         |
-| DocMongoCollection   | String | documents                  | Collection in which the document's data shall be stored |
+| Key                | Type   | Example                    | Description                                             |   
+| ------------------ | ------ | -------------------------- | ------------------------------------------------------- |
+| DocMongoURI        | String | mongodb://localhost:27017/ | Setting the URI for the document's MongoDB              |
+| DocMongoDB         | String | mongocms                   | DB in which the document's data shall be stored         |
+| DocMongoCollection | String | documents                  | Collection in which the document's data shall be stored |
 
 
 **Assets**
@@ -25,40 +25,40 @@ To set up the database following schema can be used:
 
 **User**
 
-| Key                  | Type   | Example                    | Description                                          |
-| -------------------- | ------ | -------------------------- | ---------------------------------------------------- |
-| UserMongoURI         | String | mongodb://localhost:27107/ | Setting the URI for the user's MongoDB               |
-| UserMongoDB          | String | mongocms                   | DB in which the users's data shall be stored         |
-| UserMongoCollection  | String | user                       | Collection in which the asset's data shall be stored |
+| Key                 | Type   | Example                    | Description                                          |
+| ------------------- | ------ | -------------------------- | ---------------------------------------------------- |
+| UserMongoURI        | String | mongodb://localhost:27107/ | Setting the URI for the user's MongoDB               |
+| UserMongoDB         | String | mongocms                   | DB in which the users's data shall be stored         |
+| UserMongoCollection | String | user                       | Collection in which the asset's data shall be stored |
 
 
 ## Input/Output parameter filter and mapper
 
 **Documents**  
 
-| Key                         | Type              | Example                | Description                                            |   
-| --------------------------- | ----------------- | ---------------------- | ------------------------------------------------------ |
-| DocumentPropInputWhitelist  | String[]          | parameter1             | White list of parameters which will be accepted        |
-| DocumentPropOutputWhitelist | String[]          | parameter2             | White list of parameters which will be in the response |
-| DocumentPropMapping         | (String String)[] | parent#child mappedKey | Transforms the database keys to a mapped key           |
+| Key                     | Type              | Example                | Description                                            |   
+| ----------------------- | ----------------- | ---------------------- | ------------------------------------------------------ |
+| DocumentPropWhitelistIn | String[]          | parameter1             | White list of parameters which will be accepted        |
+| DocumentPropWhitlistOut | String[]          | parameter2             | White list of parameters which will be in the response |
+| DocumentPropMapping     | (String String)[] | parent#child mappedKey | Transforms the database keys to a mapped key           |
 
 
 **Assets**
 
-| Key                               | Type              | Example                | Description                                            |   
-| --------------------------------- | ----------------- | ---------------------- | ------------------------------------------------------ |
-| AssetMetadataParamInputWhitelist  | String            | parameter1             | White list of parameters which will be accepted        |
-| AssetMetadataParamOutputWhitelist | String            | parameter2             | White list of parameters which will be in the response |
-| AssetMetadataParamMapping         | (String String)[] | parent#child mappedKey | Transforms the database keys to a mapped key           |
+| Key                   | Type              | Example                | Description                                            |   
+| --------------------- | ----------------- | ---------------------- | ------------------------------------------------------ |
+| AssetPropWhitelistIn  | String            | parameter1             | White list of parameters which will be accepted        |
+| AssetPropWhitelistOut | String            | parameter2             | White list of parameters which will be in the response |
+| AssetPropMapping      | (String String)[] | parent#child mappedKey | Transforms the database keys to a mapped key           |
 
 
 **User**
 
-| Key                             | Type              | Example                | Description                                            |
-| ------------------------------- | ----------------- | ---------------------- | ------------------------------------------------------ |
-| UserProfileParamInputWhitelist  | String[]          | parameter1             | White list of parameters which will be accepted        |
-| UserProfileParamOutputWhitelist | String[]          | parameter2             | White list of parameters which will be in the response |
-| UserProfileParamMapping         | (String String)[] | parent#child mappedKey | Transforms the database keys to a mapped key           |
+| Key                  | Type              | Example                | Description                                            |
+| -------------------- | ----------------- | ---------------------- | ------------------------------------------------------ |
+| UserPropWhitelistIn  | String[]          | parameter1             | White list of parameters which will be accepted        |
+| UserPropWhitelistOut | String[]          | parameter2             | White list of parameters which will be in the response |
+| UserPropMapping      | (String String)[] | parent#child mappedKey | Transforms the database keys to a mapped key           |
 
 
 ##Query Lists
@@ -74,8 +74,8 @@ To set up the database following schema can be used:
 
 | Key            | Type           | Example                  | Description                                                    |   
 | -------------- | -------------- | ------------------------ | -------------------------------------------------------------- |
-| AssetStorePath | Path           | /var/www/html/assetstore | Path where the assets shall be stored                          |
-| AssetTmpPath   | Path           | /tmp/asset               | Path and file-prefix to store assets temporary while uploading |
+| AssetPathStore | Path           | /var/www/html/assetstore | Path where the assets shall be stored                          |
+| AssetPathTmp   | Path           | /tmp/asset               | Path and file-prefix to store assets temporary while uploading |
 | AssetTransform | (String Int)[] | large 1000               | Setting names for image transformation widths                  |
 
 
