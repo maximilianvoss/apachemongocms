@@ -24,8 +24,8 @@ int login_doLogin(request_rec *request) {
 	long expireTimeStamp = currentTimeStamp + getModuleConfig()->user.sessionExpirationTime * 3600;
 
 	apr_table_t *requestMap = requesthelper_getPostMap(request, NULL, NULL);
-	const char *user = apr_table_get(requestMap, USER_MONGO_PROPERTY_USERNAME);
-	const char *password = apr_table_get(requestMap, USER_MONGO_PROPERTY_PASSWORD);
+	const char *user = apr_table_get(requestMap, MONGO_PROPERTY_USERNAME);
+	const char *password = apr_table_get(requestMap, MONGO_PROPERTY_PASSWORD);
 	if ( user == NULL || password == NULL ) {
 		return HTTP_FORBIDDEN;
 	}

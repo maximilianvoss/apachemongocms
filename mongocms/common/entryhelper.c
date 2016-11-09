@@ -32,7 +32,7 @@ apr_table_t *entryhelper_getEntryById(mongo_config_t *config, apr_pool_t *pool, 
 	}
 
 	apr_table_t *queryMap = apr_table_make(pool, CONFIG_TABLE_INIT_SIZE);
-	apr_table_set(queryMap, MONGO_OID, entryId);
+	apr_table_set(queryMap, MONGO_PROPERTY_OID, entryId);
 
 	mongo_cursor_t *cursor = mongo_query(config, pool, queryMap);
 	bson_t *doc;
@@ -52,12 +52,12 @@ uint8_t entryhelper_isEntryWritable(apr_pool_t *pool, apr_table_t *userMap, apr_
 	DEBUG_PUT("%s_isEntryWritable([apr_pool_t *], [apr_table_t*], [apr_table_t *])...");
 
 	char *key = apr_pcalloc(pool, sizeof(char) * SMALL_BUFFER_SIZE);
-	long maxArrayId = maputil_getMaxArrayId(pool, map, MONGO_PRIVILEGES_WRITING);
+	long maxArrayId = maputil_getMaxArrayId(pool, map, MONGO_PROPERTY_PRIVILEGES_WRITING);
 
 	const char *userId = user_getUserId(userMap);
 
 	for ( long i = 0; i < maxArrayId + 1; i++ ) {
-		sprintf(key, "%s[%ld]", MONGO_PRIVILEGES_WRITING, i);
+		sprintf(key, "%s[%ld]", MONGO_PROPERTY_PRIVILEGES_WRITING, i);
 		const char *value = apr_table_get(map, key);
 		DEBUG_MSG("%s_isEntryWritable([apr_pool_t *], [apr_table_t*], [apr_table_t *]): User name in array: %s", value);
 
@@ -112,26 +112,26 @@ int entryhelper_updateEntry(request_rec *request, mongo_config_t *mongoConfig, a
 		DEBUG_PUT("%s_updateEntry([request_rec *], [mongo_config_t *], [apr_array_header_t *], [apr_array_header_t *], [apr_table_t *], [apr_table_t *]): Document has to be created");
 
 		newDocumentMap = requestMap;
-		sprintf(buffer, "%s#$timestamp#t", MONGO_CREATEDAT);
+		sprintf(buffer, "%s#$timestamp#t", MONGO_PROPERTY_CREATEDAT);
 		apr_table_set(newDocumentMap, buffer, stringutil_longToString(request->pool, (long) time(NULL)));
 
-		sprintf(buffer, "%s#$timestamp#i", MONGO_CREATEDAT);
+		sprintf(buffer, "%s#$timestamp#i", MONGO_PROPERTY_CREATEDAT);
 		apr_table_set(newDocumentMap, buffer, "0");
 
-		sprintf(buffer, "%s#$timestamp#t", MONGO_MODIFIEDAT);
+		sprintf(buffer, "%s#$timestamp#t", MONGO_PROPERTY_MODIFIEDAT);
 		apr_table_set(newDocumentMap, buffer, stringutil_longToString(request->pool, (long) time(NULL)));
 
-		sprintf(buffer, "%s#$timestamp#i", MONGO_MODIFIEDAT);
+		sprintf(buffer, "%s#$timestamp#i", MONGO_PROPERTY_MODIFIEDAT);
 		apr_table_set(newDocumentMap, buffer, "0");
 
-		apr_table_set(newDocumentMap, MONGO_CREATEDBY, user_getUserName(userMap));
-		apr_table_set(newDocumentMap, MONGO_MODIFIEDBY, user_getUserName(userMap));
+		apr_table_set(newDocumentMap, MONGO_PROPERTY_CREATEDBY, user_getUserName(userMap));
+		apr_table_set(newDocumentMap, MONGO_PROPERTY_MODIFIEDBY, user_getUserName(userMap));
 
-		sprintf(buffer, "%s[0]", MONGO_PRIVILEGES_WRITING);
+		sprintf(buffer, "%s[0]", MONGO_PROPERTY_PRIVILEGES_WRITING);
 		apr_table_set(newDocumentMap, buffer, user_getUserId(userMap));
 
 		documentId = mongo_commit(mongoConfig, request->pool, newDocumentMap);
-		apr_table_set(newDocumentMap, MONGO_OID, documentId);
+		apr_table_set(newDocumentMap, MONGO_PROPERTY_OID, documentId);
 	} else {
 		DEBUG_PUT("%s_updateEntry([request_rec *], [mongo_config_t *], [apr_array_header_t *], [apr_array_header_t *], [apr_table_t *], [apr_table_t *]): Document can be modified");
 
@@ -142,13 +142,13 @@ int entryhelper_updateEntry(request_rec *request, mongo_config_t *mongoConfig, a
 
 		newDocumentMap = maputil_mergeMaps(request->pool, documentMap, requestMap);
 		
-		sprintf(buffer, "%s#$timestamp#t", MONGO_MODIFIEDAT);
+		sprintf(buffer, "%s#$timestamp#t", MONGO_PROPERTY_MODIFIEDAT);
 		apr_table_set(newDocumentMap, buffer, stringutil_longToString(request->pool, (long) time(NULL)));
 
-		sprintf(buffer, "%s#$timestamp#i", MONGO_MODIFIEDAT);
+		sprintf(buffer, "%s#$timestamp#i", MONGO_PROPERTY_MODIFIEDAT);
 		apr_table_set(newDocumentMap, buffer, "0");
 
-		apr_table_set(newDocumentMap, MONGO_MODIFIEDBY, user_getUserName(userMap));
+		apr_table_set(newDocumentMap, MONGO_PROPERTY_MODIFIEDBY, user_getUserName(userMap));
 
 		mongo_update(mongoConfig, request->pool, documentMap, newDocumentMap);
 	}

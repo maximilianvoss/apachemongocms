@@ -16,22 +16,22 @@
 // Init size of config table
 #define CONFIG_TABLE_INIT_SIZE 5
 
-// configuration of mongodb 
-#define MONGO_OID "_id#$oid"
-#define MONGO_CREATEDBY "createdBy"
-#define MONGO_CREATEDAT "createdAt"
-#define MONGO_MODIFIEDBY "modifiedBy"
-#define MONGO_MODIFIEDAT "modifiedAt"
-#define MONGO_PRIVILEGES_WRITING "privileges#writing"
+// mongo attributes 
+#define MONGO_PROPERTY_OID "_id#$oid"
+#define MONGO_PROPERTY_USERNAME "username"
+#define MONGO_PROPERTY_PASSWORD "password"
+#define MONGO_PROPERTY_CREATEDBY "createdBy"
+#define MONGO_PROPERTY_CREATEDAT "createdAt"
+#define MONGO_PROPERTY_MODIFIEDBY "modifiedBy"
+#define MONGO_PROPERTY_MODIFIEDAT "modifiedAt"
+#define MONGO_PROPERTY_PRIVILEGES_WRITING "privileges#writing"
+#define MONGO_PROPERTY_REFERENCES "references"
 
-// configuration for the user's collection
-#define USER_PROFILE_FILENAME "profile.json"
-#define USER_LOGIN_FILENAME "login.json"
-#define USER_LOGOUT_FILENAME "logout.json"
-#define USER_REGISTRATION_FILENAME "register.json"
-#define USER_UNREGISTRATION_FILENAME "unregister.json"
-
-#define USER_MONGO_PROPERTY_USERNAME "username"
-#define USER_MONGO_PROPERTY_PASSWORD "password"
+// filenames
+#define FILENAME_USER_PROFILE "profile.json"
+#define FILENAME_USER_LOGIN "login.json"
+#define FILENAME_USER_LOGOUT "logout.json"
+#define FILENAME_USER_REGISTRATION "register.json"
+#define FILENAME_ALL_DELETE "delete.json"
 
 #endif

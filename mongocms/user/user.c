@@ -20,9 +20,9 @@ apr_table_t *user_checkExistence(apr_pool_t *pool, const char *username, char *h
 	apr_table_t *queryMap = apr_table_make(pool, 2);
 	apr_table_t *userMap = apr_table_make(pool, 30);
 
-	apr_table_set(queryMap, USER_MONGO_PROPERTY_USERNAME, username);
+	apr_table_set(queryMap, MONGO_PROPERTY_USERNAME, username);
 	if ( hashedPassword != NULL ) {
-		apr_table_set(queryMap, USER_MONGO_PROPERTY_PASSWORD, hashedPassword);
+		apr_table_set(queryMap, MONGO_PROPERTY_PASSWORD, hashedPassword);
 	}
 
 	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, pool, queryMap);
@@ -92,11 +92,11 @@ apr_table_t *user_getUserMap(request_rec *request) {
 char *user_getUserName(apr_table_t *userMap) {
 	DEBUG_PUT("%s_getUserName([apr_table_t *])...");
 	DEBUG_PUT("%s_getUserName([apr_table_t *])... DONE");
-	return (char *) apr_table_get(userMap, USER_MONGO_PROPERTY_USERNAME);
+	return (char *) apr_table_get(userMap, MONGO_PROPERTY_USERNAME);
 }
 
 char *user_getUserId(apr_table_t *userMap) {
 	DEBUG_PUT("%s_getUserId([apr_table_t *])...");
 	DEBUG_PUT("%s_getUserId([apr_table_t *])... DONE");
-	return (char *) apr_table_get(userMap, MONGO_OID);
+	return (char *) apr_table_get(userMap, MONGO_PROPERTY_OID);
 }

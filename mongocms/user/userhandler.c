@@ -14,23 +14,23 @@ int user_getEntryList(mongo_config_t *mongoConfig, request_rec *request, char *f
 int user_handler(request_rec *request, char *filename) {
 	switch ( request->method_number ) {
 		case M_POST:
-			if ( !strcmp(filename, USER_LOGIN_FILENAME) )
+			if ( !strcmp(filename, FILENAME_USER_LOGIN) )
 				return login_doLogin(request);
-			if ( !strcmp(filename, USER_PROFILE_FILENAME) )
+			if ( !strcmp(filename, FILENAME_USER_PROFILE) )
 				return profile_set(request);
-			if ( !strcmp(filename, USER_REGISTRATION_FILENAME) )
+			if ( !strcmp(filename, FILENAME_USER_REGISTRATION) )
 				return registration_user(request);
-			if ( !strcmp(filename, USER_UNREGISTRATION_FILENAME) )
+			if ( !strcmp(filename, FILENAME_ALL_DELETE) )
 				return registration_removeUser(request);
-			if ( !strcmp(filename, USER_LOGOUT_FILENAME) )
+			if ( !strcmp(filename, FILENAME_USER_LOGOUT) )
 				return logout_destroyUserSession(request);
 			break;
 		case M_GET:
 			if ( stringutil_startsWith(filename, "list.") )
 				return user_getEntryList(&getModuleConfig()->user.database, request, filename);
-			if ( !strcmp(filename, USER_LOGOUT_FILENAME) )
+			if ( !strcmp(filename, FILENAME_USER_LOGOUT) )
 				return logout_destroyUserSession(request);
-			if ( !strcmp(filename, USER_PROFILE_FILENAME) )
+			if ( !strcmp(filename, FILENAME_USER_PROFILE) )
 				return profile_get(request);
 			break;
 		default:

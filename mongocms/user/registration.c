@@ -19,8 +19,8 @@ int registration_user(request_rec *request) {
 	DEBUG_PUT("%s_user([request_rec *])...");
 	apr_table_t *requestMap = requesthelper_getPostMap(request, getModuleConfig()->user.propMappingIn, getModuleConfig()->user.propWhitelistIn);
 
-	const char *user = apr_table_get(requestMap, USER_MONGO_PROPERTY_USERNAME);
-	const char *password = apr_table_get(requestMap, USER_MONGO_PROPERTY_PASSWORD);
+	const char *user = apr_table_get(requestMap, MONGO_PROPERTY_USERNAME);
+	const char *password = apr_table_get(requestMap, MONGO_PROPERTY_PASSWORD);
 
 	if ( user == NULL || password == NULL ) {
 		DEBUG_PUT("%s_user([request_rec *]): Bad Request");
@@ -37,8 +37,8 @@ int registration_user(request_rec *request) {
 	}
 
 	char *hashedPassword = password_hashPassword(request->pool, user, password);
-	apr_table_set(requestMap, USER_MONGO_PROPERTY_USERNAME, user);
-	apr_table_set(requestMap, USER_MONGO_PROPERTY_PASSWORD, hashedPassword);
+	apr_table_set(requestMap, MONGO_PROPERTY_USERNAME, user);
+	apr_table_set(requestMap, MONGO_PROPERTY_PASSWORD, hashedPassword);
 	apr_table_set(requestMap, "login-token[x]", "0");
 
 	mongo_commit(&getModuleConfig()->user.database, request->pool, requestMap);
@@ -53,8 +53,8 @@ int registration_removeUser(request_rec *request) {
 	DEBUG_PUT("%s_removeUser([request_rec *])...");
 	apr_table_t *requestMap = requesthelper_getPostMap(request, getModuleConfig()->user.propMappingIn, getModuleConfig()->user.propWhitelistIn);
 
-	const char *user = apr_table_get(requestMap, USER_MONGO_PROPERTY_USERNAME);
-	const char *password = apr_table_get(requestMap, USER_MONGO_PROPERTY_PASSWORD);
+	const char *user = apr_table_get(requestMap, MONGO_PROPERTY_USERNAME);
+	const char *password = apr_table_get(requestMap, MONGO_PROPERTY_PASSWORD);
 
 	if ( user == NULL || password == NULL ) {
 		DEBUG_PUT("%s_removeUser([request_rec *]): Bad Request");
@@ -73,8 +73,8 @@ int registration_removeUser(request_rec *request) {
 	}
 
 	apr_table_t *deleteEntryMap = apr_table_make(request->pool, 2);
-	apr_table_set(deleteEntryMap, USER_MONGO_PROPERTY_USERNAME, user);
-	apr_table_set(deleteEntryMap, USER_MONGO_PROPERTY_PASSWORD, hashedPassword);
+	apr_table_set(deleteEntryMap, MONGO_PROPERTY_USERNAME, user);
+	apr_table_set(deleteEntryMap, MONGO_PROPERTY_PASSWORD, hashedPassword);
 
 	mongo_delete(&getModuleConfig()->user.database, request->pool, deleteEntryMap);
 

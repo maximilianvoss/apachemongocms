@@ -74,7 +74,7 @@ sub testlogin_remove($$$) {
     my ($username, $password, $tokenID) = @_;
     print 'Testcase testlogin_remove: ';
 
-    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "username='.$username.'&password='.$password.'" '.$HOST.'/user/unregister.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "username='.$username.'&password='.$password.'" '.$HOST.'/user/delete.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

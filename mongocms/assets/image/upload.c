@@ -62,22 +62,22 @@ int upload_image(mongo_config_t *config, request_rec *request) {
 		extractor_extract(map, newFilePath);
 
 		apr_table_t *userMap = user_getUserMap(request);
-		apr_table_set(map, MONGO_CREATEDBY, user_getUserName(userMap));
+		apr_table_set(map, MONGO_PROPERTY_CREATEDBY, user_getUserName(userMap));
 
 		buffer = apr_pcalloc(request->pool, SMALL_BUFFER_SIZE);
-		sprintf(buffer, "%s#$timestamp#t", MONGO_CREATEDAT);
+		sprintf(buffer, "%s#$timestamp#t", MONGO_PROPERTY_CREATEDAT);
 		apr_table_set(map, buffer, stringutil_longToString(request->pool, (long) time(NULL)));
 
-		sprintf(buffer, "%s#$timestamp#i", MONGO_CREATEDAT);
+		sprintf(buffer, "%s#$timestamp#i", MONGO_PROPERTY_CREATEDAT);
 		apr_table_set(map, buffer, "0");
 
-		sprintf(buffer, "%s[0]", MONGO_PRIVILEGES_WRITING);
+		sprintf(buffer, "%s[0]", MONGO_PROPERTY_PRIVILEGES_WRITING);
 		apr_table_set(map, buffer, user_getUserId(userMap));
 
 		char *oidStr = mongo_commit(config, request->pool, map);
 
 		apr_table_t *responseMap = apr_table_make(request->pool, 2);
-		apr_table_set(responseMap, MONGO_OID, oidStr);
+		apr_table_set(responseMap, MONGO_PROPERTY_OID, oidStr);
 		apr_table_set(responseMap, "Status", "OK");
 
 		ap_rputs(jsonmapfilter_outboundMap(request->pool, responseMap, getModuleConfig()->asset.propMappingOut), request);
