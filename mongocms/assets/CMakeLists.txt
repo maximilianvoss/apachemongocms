@@ -1,4 +1,4 @@
-include("../cmake/include.cmake")
+include("${CMAKE_SOURCE_DIR}/cmake/include.cmake")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 -fopenmp -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16")
 

@@ -211,7 +211,7 @@ char *stringutil_replaceVariables(apr_pool_t *pool, char *str, apr_table_t *map)
 
 	while ( *ptr != '\0' ) {
 
-		if ( *ptr == '$' && *( ptr + 1 ) == '{' ) {
+		if ( *ptr == '@' && *( ptr + 1 ) == '{' ) {
 			ptr += 2;
 			memset(variableName, '\0', 255);
 			ptr2 = variableName;

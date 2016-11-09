@@ -82,28 +82,10 @@ WantedBy=multi-user.target
 # make
 # make install
 ```
-
-**Build Script**
-```
-$ cd ~
-$ cat >build.sh
-```
-
-Paste Content
-```
-#/bin/bash
-#
-
-cd ~/publisher/mod_mongocms/main/src/mongocms; cmake -G "Unix Makefiles" && sudo make install && sudo service apache2 restart || apachectl configtest
-```
-  
-```
-$ chmod +x ./build.sh
-```
  
 # Compile Code
 ```
-$ cd ~
+$ cd ~/mongocms/scripts/
 $ ./build.sh
 ```
 
@@ -130,7 +112,7 @@ $ ./build.sh
 **Config Apache2 HTTP**
 ```
 # cd /etc/apache2/mods-available/
-# ln -s ~cms/publisher/mod_publisher/main/src/config/mongocms.* .
+# ln -sf ~cms/mongocms/httpconfig/* .
 # a2enmod mongocms
 # service apache2 restart
 ```

@@ -1,4 +1,4 @@
-include("../cmake/include.cmake")
+include("${CMAKE_SOURCE_DIR}/cmake/include.cmake")
 
 set(SOURCE_FILES
         userhandler.c

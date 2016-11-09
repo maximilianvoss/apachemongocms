@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
-project(mod_mongocms)
-
-add_subdirectory(tools)
+#project(mod_mongocms)
 
 include(includes.cmake)
-include("cmake/include.cmake")
+include("${CMAKE_SOURCE_DIR}/cmake/include.cmake")
 
 add_subdirectory(module)
 add_subdirectory(libs)
