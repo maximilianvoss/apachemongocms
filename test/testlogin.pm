@@ -2,7 +2,7 @@ package test;
 use strict;
 use warnings FATAL => 'all';
 
-our $TEST_PUBLISH_HOST;
+our $HOST;
 our $DEBUG;
 
 
@@ -10,7 +10,7 @@ sub testlogin_register($$) {
     my ($username, $password) = @_;
     print 'Testcase testlogin_register: ';
 
-    my $cmd = 'curl -i -X POST -d "username='.$username.'&password='.$password.'" '.$TEST_PUBLISH_HOST.'/user/register.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -d "username='.$username.'&password='.$password.'" '.$HOST.'/user/register.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -27,7 +27,7 @@ sub testlogin_login($$) {
     my ($username, $password) = @_;
     print 'Testcase testlogin_login: ';
 
-    my $cmd = 'curl -i -X POST -d "username='.$username.'&password='.$password.'" '.$TEST_PUBLISH_HOST.'/user/login.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -d "username='.$username.'&password='.$password.'" '.$HOST.'/user/login.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -57,7 +57,7 @@ sub testlogin_logout($) {
 
     print 'Testcase testlogin_logout: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/user/logout.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/user/logout.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -74,7 +74,7 @@ sub testlogin_remove($$$) {
     my ($username, $password, $tokenID) = @_;
     print 'Testcase testlogin_remove: ';
 
-    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "username='.$username.'&password='.$password.'" '.$TEST_PUBLISH_HOST.'/user/unregister.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "username='.$username.'&password='.$password.'" '.$HOST.'/user/unregister.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

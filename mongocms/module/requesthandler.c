@@ -5,6 +5,7 @@
 #include "../assets/assetshandler.h"
 #include "../documents/documents.h"
 #include "../user/user.h"
+#include "../constants.h"
 
 int request_handler(request_rec *request) {
 

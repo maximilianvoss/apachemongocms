@@ -2,7 +2,7 @@ package test;
 use strict;
 use warnings FATAL => 'all';
 
-our $TEST_PUBLISH_HOST;
+our $HOST;
 our $DEBUG;
 
 sub testdocument_newDocument($) {
@@ -10,7 +10,7 @@ sub testdocument_newDocument($) {
 
     print 'Testcase testdocument_newDocument: ';
 
-    my $cmd = 'curl -i -X POST -d \'param1=value1&param2=value2\' -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/document.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -d \'param1=value1&param2=value2\' -b "tokenId='.$tokenID.'" '.$HOST.'/document.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -35,7 +35,7 @@ sub testdocument_getDocument($) {
 
     print 'Testcase testdocument_getDocument: ';
 
-    my $cmd = 'curl -i -X GET '.$TEST_PUBLISH_HOST.'/'.$documentId.'.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET '.$HOST.'/'.$documentId.'.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -60,7 +60,7 @@ sub testdocument_updateDocument($$) {
 
     print 'Testcase testdocument_updateDocument: ';
 
-    my $cmd = 'curl -i -X POST -d \'param1=value3&param2=value4\' -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/'.$documentId.'.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -d \'param1=value3&param2=value4\' -b "tokenId='.$tokenID.'" '.$HOST.'/'.$documentId.'.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

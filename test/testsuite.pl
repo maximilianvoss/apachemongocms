@@ -5,7 +5,7 @@ package test;
 use strict;
 use warnings FATAL => 'all';
 
-our $TEST_PUBLISH_HOST = 'http://vmware';
+our $HOST = 'http://vmware';
 our $DEBUG = 0;
 
 use testlogin;

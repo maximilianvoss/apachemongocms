@@ -2,7 +2,7 @@ package test;
 use strict;
 use warnings FATAL => 'all';
 
-our $TEST_PUBLISH_HOST;
+our $HOST;
 our $DEBUG;
 
 sub testimage_uploadPUT($) {
@@ -10,7 +10,7 @@ sub testimage_uploadPUT($) {
 
     print 'Testcase testimage_uploadPUT: ';
 
-    my $cmd = 'curl -i -X PUT -b "tokenId='.$tokenID.'" --upload-file resource/image.jpg '.$TEST_PUBLISH_HOST.'/dam/ 2>/dev/null';
+    my $cmd = 'curl -i -X PUT -b "tokenId='.$tokenID.'" --upload-file resource/image.jpg '.$HOST.'/dam/ 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -33,7 +33,7 @@ sub testimage_uploadPOST($) {
 
     print 'Testcase testimage_uploadPOST: ';
 
-    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" --upload-file resource/image.jpg '.$TEST_PUBLISH_HOST.'/dam/ 2>/dev/null';
+    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" --upload-file resource/image.jpg '.$HOST.'/dam/ 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -56,7 +56,7 @@ sub testimage_getValidRendition($) {
 
     print 'Testcase testimage_getValidRendition: ';
 
-    my $cmd = 'curl -I -X GET '.$TEST_PUBLISH_HOST.'/dam/'.$imageID.'.huhu.jpg 2>/dev/null';
+    my $cmd = 'curl -I -X GET '.$HOST.'/dam/'.$imageID.'.huhu.jpg 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -78,7 +78,7 @@ sub testimage_getInValidRendition($) {
 
     print 'Testcase testimage_getInValidRendition: ';
 
-    my $cmd = 'curl -I -X GET '.$TEST_PUBLISH_HOST.'/dam/'.$imageID.'.huhuabcd.jpg 2>/dev/null';
+    my $cmd = 'curl -I -X GET '.$HOST.'/dam/'.$imageID.'.huhuabcd.jpg 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -96,7 +96,7 @@ sub testimage_getValidRenditionPNG($) {
 
     print 'Testcase testimage_getValidRenditionPNG: ';
 
-    my $cmd = 'curl -I -X GET '.$TEST_PUBLISH_HOST.'/dam/'.$imageID.'.huhu.png 2>/dev/null';
+    my $cmd = 'curl -I -X GET '.$HOST.'/dam/'.$imageID.'.huhu.png 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -118,7 +118,7 @@ sub testimage_getProperties($) {
 
     print 'Testcase testimage_getProperties: ';
 
-    my $cmd = 'curl -i -X GET '.$TEST_PUBLISH_HOST.'/dam/'.$imageID.'.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET '.$HOST.'/dam/'.$imageID.'.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

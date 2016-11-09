@@ -2,7 +2,7 @@ package test;
 use strict;
 use warnings FATAL => 'all';
 
-our $TEST_PUBLISH_HOST;
+our $HOST;
 our $DEBUG;
 
 sub testlist_asset_valid($) {
@@ -10,7 +10,7 @@ sub testlist_asset_valid($) {
 
     print 'Testcase testlist_asset_valid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/dam/list.test.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/dam/list.test.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -29,7 +29,7 @@ sub testlist_asset_invalid($) {
 
     print 'Testcase testlist_asset_invalid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/dam/list.test2.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/dam/list.test2.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -46,7 +46,7 @@ sub testlist_user_valid($) {
 
     print 'Testcase testlist_user_valid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/user/list.test.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/user/list.test.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -65,7 +65,7 @@ sub testlist_user_invalid($) {
 
     print 'Testcase testlist_user_invalid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/user/list.test2.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/user/list.test2.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -82,7 +82,7 @@ sub testlist_document_valid($$) {
 
     print 'Testcase testlist_document_valid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/list.test.json?username='.$user.' 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/list.test.json?username='.$user.' 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -101,7 +101,7 @@ sub testlist_document_invalid($) {
 
     print 'Testcase testlist_document_invalid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/list.test2.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/list.test2.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

@@ -2,7 +2,7 @@ package test;
 use strict;
 use warnings FATAL => 'all';
 
-our $TEST_PUBLISH_HOST;
+our $HOST;
 our $DEBUG;
 
 sub testprofile_getProfile($$) {
@@ -10,7 +10,7 @@ sub testprofile_getProfile($$) {
 
     print 'Testcase testprofile_getProfile: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/user/profile.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$HOST.'/user/profile.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -34,7 +34,7 @@ sub testprofile_setProfileWhite($) {
 
     my $randVal = int(rand(1000));
 
-    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "test='.$randVal.'" '.$TEST_PUBLISH_HOST.'/user/profile.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "test='.$randVal.'" '.$HOST.'/user/profile.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
@@ -58,7 +58,7 @@ sub testprofile_setProfileBlack($) {
 
     my $randVal = int(rand(1000));
 
-    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "test'.$randVal.'=abc" '.$TEST_PUBLISH_HOST.'/user/profile.json 2>/dev/null';
+    my $cmd = 'curl -i -X POST -b "tokenId='.$tokenID.'" -d "test'.$randVal.'=abc" '.$HOST.'/user/profile.json 2>/dev/null';
     my $output = `$cmd`;
 
     # status code
