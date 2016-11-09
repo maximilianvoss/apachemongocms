@@ -40,6 +40,6 @@ int assets_handler(request_rec *request, char *filename) {
 }
 
 int assets_getEntryList(mongo_config_t *mongoConfig, request_rec *request, char *filename) {
-	return entryhelper_getEntryList(request, mongoConfig, getModuleConfig()->asset.queryList, getModuleConfig()->asset.propWhitelistOut, getModuleConfig()->asset
-			.propMappingOut, filename);
+	return entryhelper_getEntryList(request, mongoConfig, getModuleConfig()->asset.queryList, getModuleConfig()->asset.propWhitelistIn, getModuleConfig()->asset.propWhitelistOut, getModuleConfig()
+			->asset.propMappingIn, getModuleConfig()->asset.propMappingOut, filename);
 }

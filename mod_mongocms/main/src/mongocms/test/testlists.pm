@@ -77,12 +77,12 @@ sub testlist_user_invalid($) {
     print $cmd."\n".$output."\n\n" if ($DEBUG);
 }1;
 
-sub testlist_document_valid($) {
-    my ($tokenID) = @_;
+sub testlist_document_valid($$) {
+    my ($tokenID, $user) = @_;
 
     print 'Testcase testlist_document_valid: ';
 
-    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/list.test.json 2>/dev/null';
+    my $cmd = 'curl -i -X GET -b "tokenId='.$tokenID.'" '.$TEST_PUBLISH_HOST.'/list.test.json?username='.$user.' 2>/dev/null';
     my $output = `$cmd`;
 
     # status code

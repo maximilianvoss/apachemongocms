@@ -4,6 +4,7 @@
 #include "jsonmapfilter.h"
 
 apr_table_t *requesthelper_readPost(request_rec *request);
+apr_table_t *requesthelper_readGet(request_rec *request);
 
 // save post file request to file
 apr_status_t requesthelper_saveRequestToFile(request_rec *request, const char *filename) {
@@ -55,10 +56,10 @@ apr_status_t requesthelper_saveRequestToFile(request_rec *request, const char *f
 }
 
 
-apr_table_t *requesthelper_getPostMap(request_rec *request, apr_table_t *inverseMap, apr_array_header_t *inputWhiteList) {
+apr_table_t *requesthelper_getPostMap(request_rec *request, apr_table_t *mappingIn, apr_array_header_t *whitelistIn) {
 	apr_table_t *requestMap = requesthelper_readPost(request);
-	apr_table_t *transformedRequestMap = jsonmapfilter_inboundMap(request->pool, requestMap, inverseMap);
-	apr_table_t *whitelistedMap = maputil_removeUnlistedElements(request->pool, transformedRequestMap, inputWhiteList);
+	apr_table_t *transformedRequestMap = jsonmapfilter_inboundMap(request->pool, requestMap, mappingIn);
+	apr_table_t *whitelistedMap = maputil_removeUnlistedElements(request->pool, transformedRequestMap, whitelistIn);
 	return whitelistedMap;
 }
 
@@ -91,3 +92,27 @@ apr_table_t *requesthelper_readPost(request_rec *request) {
 	return map;
 }
 
+apr_table_t *requesthelper_getGetMap(request_rec *request, apr_table_t *mappingIn, apr_array_header_t *whiltelistIn) {
+	apr_table_t *requestMap = requesthelper_readGet(request);
+	apr_table_t *transformedRequestMap = jsonmapfilter_inboundMap(request->pool, requestMap, mappingIn);
+	apr_table_t *whitelistedMap = maputil_removeUnlistedElements(request->pool, transformedRequestMap, whiltelistIn);
+	return whitelistedMap;
+}
+
+// read standard vales from a get request
+apr_table_t *requesthelper_readGet(request_rec *request) {
+	char *key;
+	char *val;
+	const char *data = request->args;
+
+	apr_table_t *map = apr_table_make(request->pool, CONFIG_TABLE_INIT_SIZE);
+	if ( data != NULL ) {
+		while ( *data && ( val = ap_getword(request->pool, &data, '&') ) ) {
+			key = ap_getword(request->pool, (const char **) &val, '=');
+			ap_unescape_url(key);
+			ap_unescape_url(val);
+			apr_table_set(map, key, val);
+		}
+	}
+	return map;
+}

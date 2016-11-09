@@ -5,7 +5,7 @@
 #include "../includes.h"
 #include <string.h>
 
-//#define COMMON_STRINGUTIL_DEBUG
+#define COMMON_STRINGUTIL_DEBUG
 
 typedef struct {
 	long start;
@@ -22,5 +22,6 @@ char *stringutil_escapeString(apr_pool_t *pool, char *str);
 void stringutil_replaceChar(char *str, char old, char new);
 uint8_t stringutil_startsWith(char *str, char *token);
 char *stringutil_longToString(apr_pool_t *pool, long value);
+char *stringutil_replaceVariables(apr_pool_t *pool, char *string, apr_table_t *map);
 
 #endif

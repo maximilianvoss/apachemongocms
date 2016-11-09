@@ -12,7 +12,7 @@ This file contains standard configurations and structures to run the Apache modu
 
 typedef struct s_mongo_config_query_list {
 	char *name;
-	apr_table_t *map;
+	char *query;
 	struct s_mongo_config_query_list *next;
 } mongo_config_query_list_t;
 

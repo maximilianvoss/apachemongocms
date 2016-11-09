@@ -35,6 +35,6 @@ int documents_get(mongo_config_t *mongoConfig, request_rec *request) {
 
 
 int document_getEntryList(mongo_config_t *mongoConfig, request_rec *request, char *filename) {
-	return entryhelper_getEntryList(request, mongoConfig, getModuleConfig()->document.queryList, getModuleConfig()->document.propWhitelistOut, getModuleConfig()->document
-			.propMappingOut, filename);
+	return entryhelper_getEntryList(request, mongoConfig, getModuleConfig()->document.queryList, getModuleConfig()->document.propWhitelistIn, getModuleConfig()->document.propWhitelistOut,
+	                                getModuleConfig()->document.propMappingIn, getModuleConfig()->document.propMappingOut, filename);
 }

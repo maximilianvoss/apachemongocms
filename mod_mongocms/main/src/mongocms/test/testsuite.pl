@@ -27,6 +27,8 @@ testprofile_setProfileBlack($tokenID);
 my $documentId = testdocument_newDocument($tokenID);
 testdocument_getDocument($documentId);
 testdocument_updateDocument($tokenID, $documentId);
+testlist_document_valid($tokenID, $user);
+testlist_document_invalid($tokenID);
 
 my $imagePUT = testimage_uploadPUT($tokenID);
 testimage_getValidRendition($imagePUT);
@@ -42,11 +44,9 @@ testimage_getProperties($imagePOST);
 
 testlist_asset_valid($tokenID);
 testlist_asset_invalid($tokenID);
+
 testlist_user_valid($tokenID);
 testlist_user_invalid($tokenID);
-testlist_document_valid($tokenID);
-testlist_document_invalid($tokenID);
-
 testlogin_logout($tokenID);
 
 $tokenID = testlogin_login($user, $password);

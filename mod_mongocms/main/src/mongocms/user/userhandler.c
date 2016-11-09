@@ -40,5 +40,6 @@ int user_handler(request_rec *request, char *filename) {
 }
 
 int user_getEntryList(mongo_config_t *mongoConfig, request_rec *request, char *filename) {
-	return entryhelper_getEntryList(request, mongoConfig, getModuleConfig()->user.queryList, getModuleConfig()->user.propWhitelistOut, getModuleConfig()->user.propMappingOut, filename);
+	return entryhelper_getEntryList(request, mongoConfig, getModuleConfig()->user.queryList, getModuleConfig()->user.propWhitelistIn, getModuleConfig()->user.propWhitelistOut, getModuleConfig()
+			->user.propMappingIn, getModuleConfig()->user.propMappingOut, filename);
 }

@@ -3,7 +3,7 @@
 
 #include "../includes.h"
 
-#define COMMON_MONGO_DEBUG
+//#define COMMON_MONGO_DEBUG
 
 typedef struct {
 	const char *uri;

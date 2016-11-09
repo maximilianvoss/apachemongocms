@@ -1,6 +1,5 @@
 #include "directives.h"
 #include "../mod_mongocms.h"
-#include "../common/jsonhandling.h"
 
 #define DIRECTIVES_MODULE_HELPER(x) if(!strcmp(cmd->cmd->name, x))
 
@@ -198,9 +197,8 @@ const char *directives_parseCreateList(cmd_parms *cmd, void *cfg, const char *ar
 	strcpy(query, ptr);
 
 	queryList = apr_pcalloc(getModuleConfig()->modulePool, sizeof(mongo_config_query_list_t));
-	queryList->map = apr_table_make(getModuleConfig()->modulePool, CONFIG_TABLE_INIT_SIZE);
+	queryList->query = query;
 	queryList->name = listName;
-	jsonhandling_json2aprmap(queryList->map, query);
 
 	DIRECTIVES_MODULE_HELPER(DocumentQueryList) {
 		queryList->next = getModuleConfig()->document.queryList;

@@ -178,7 +178,8 @@ int entryhelper_getEntry(request_rec *request, mongo_config_t *mongoConfig, apr_
 	return OK;
 }
 
-int entryhelper_getEntryList(request_rec *request, mongo_config_t *mongoConfig, mongo_config_query_list_t *queryList, apr_array_header_t *whitelistOut, apr_table_t *mappingOut, char *filename) {
+int entryhelper_getEntryList(request_rec *request, mongo_config_t *mongoConfig, mongo_config_query_list_t *queryList, apr_array_header_t *whitelistIn, apr_array_header_t *whitelistOut, apr_table_t
+*mappingIn, apr_table_t *mappingOut, char *filename) {
 	DEBUG_MSG("%s_getEntryList([request_rec *], [mongo_config_t *], [mongo_config_query_list_t *] [apr_array_header_t *], [apr_table_t *], %s)...", filename);
 	char *listName;
 
@@ -214,10 +215,21 @@ int entryhelper_getEntryList(request_rec *request, mongo_config_t *mongoConfig, 
 
 	apr_table_t *resultMap = apr_table_make(request->pool, CONFIG_TABLE_INIT_SIZE);
 	apr_table_t *documentMap = apr_table_make(request->pool, CONFIG_TABLE_INIT_SIZE);
+	apr_table_t *queryMap = apr_table_make(request->pool, CONFIG_TABLE_INIT_SIZE);
+	apr_table_t *map = requesthelper_getGetMap(request, mappingIn, whitelistIn);
+
+	char *query = stringutil_replaceVariables(request->pool, queryList->query, map);
+	if ( query == NULL ) {
+		DEBUG_MSG("%s_getEntryList([request_rec *], [mongo_config_t *], [mongo_config_query_list_t *] [apr_array_header_t *], [apr_table_t *], %s): required parameter is not set", filename);
+		DEBUG_MSG("%s_getEntryList([request_rec *], [mongo_config_t *], [mongo_config_query_list_t *] [apr_array_header_t *], [apr_table_t *], %s)... DONE", filename);
+		return HTTP_FORBIDDEN;
+	}
+	jsonhandling_json2aprmap(queryMap, query);
+	
 	bson_t *doc;
 	int i = 0;
 	char buffer[20];
-	mongo_cursor_t *cursor = mongo_query(mongoConfig, request->pool, queryList->map);
+	mongo_cursor_t *cursor = mongo_query(mongoConfig, request->pool, queryMap);
 	while ( mongoc_cursor_next(cursor->cursor, (const bson_t **) &doc) ) {
 		mongo_bson2map(documentMap, doc);
 

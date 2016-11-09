@@ -1,4 +1,5 @@
 #include "stringutil.h"
+#include "../constants.h"
 
 #ifdef COMMON_STRINGUTIL_DEBUG
 
@@ -194,5 +195,56 @@ uint8_t stringutil_startsWith(char *str, char *token) {
 char *stringutil_longToString(apr_pool_t *pool, long value) {
 	char *buffer = apr_pcalloc(pool, sizeof(char) * 21);
 	sprintf(buffer, "%ld", value);
+	return buffer;
+}
+
+
+char *stringutil_replaceVariables(apr_pool_t *pool, char *str, apr_table_t *map) {
+	DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *])...", str);
+
+	char variableName[255];
+	char *ptr = str;
+	char *ptr2 = variableName;
+	const char *variableValue;
+	char *buffer = apr_pcalloc(pool, SMALL_BUFFER_SIZE);
+	char *ptr3 = buffer;
+
+	while ( *ptr != '\0' ) {
+
+		if ( *ptr == '$' && *( ptr + 1 ) == '{' ) {
+			ptr += 2;
+			memset(variableName, '\0', 255);
+			ptr2 = variableName;
+
+			while ( *ptr != '\0' && *ptr != '}' ) {
+				*ptr2 = *ptr;
+				ptr++;
+				ptr2++;
+			}
+			DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *]): variableName=%s", str, variableName);
+
+			if ( *ptr == '\0' ) {
+				DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *]): Unexpected end of String", str);
+				return NULL;
+			}
+
+			variableValue = apr_table_get(map, variableName);
+			DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *]): variableValue=%s", str, variableValue);
+			if ( variableValue == NULL ) {
+				DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *]): Expected field is not set", str);
+				return NULL;
+			}
+			size_t length = strlen(variableValue);
+			memcpy(ptr3, variableValue, length);
+			ptr3 += length - 1;
+		} else {
+			*ptr3 = *ptr;
+		}
+		ptr++;
+		ptr3++;
+	}
+
+	DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *]): output=%s", str, buffer);
+	DEBUG_MSG("%s_replaceVariables([apr_pool_t *], %s, [apr_table_t *])... DONE", str);
 	return buffer;
 }
