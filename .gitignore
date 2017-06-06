@@ -20,3 +20,6 @@
 target
 
 cmake-build-*
+mongocms/libs/ctemplate/*
+mongocms/libs/csafestring/*
+mongocms/libs/json2map/*
