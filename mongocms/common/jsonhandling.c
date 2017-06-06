@@ -25,9 +25,9 @@ void jsonhandling_mapHook(void *data, char *key, char *value) {
 void jsonhandling_json2aprmap(apr_table_t *map, char *json) {
 	DEBUG_MSG("%s_json2aprmap([map], %s)...", json);
 
-	json2map_t *json2mapObj = json2map_init();
-	json2map_registerHook(json2mapObj, (void *) map, &jsonhandling_mapHook);
-	json2map_parse(json2mapObj, json);
+	json2map_t *json2mapObj = json2map_init(0);
+	json2map_registerDataHook(json2mapObj, (void *) map, &jsonhandling_mapHook);
+	json2map_parse(json2mapObj, NULL, json);
 	json2map_destroy(json2mapObj);
 
 	DEBUG_MSG("%s_json2aprmap([map], %s)... DONE", json);
@@ -47,13 +47,13 @@ int jsonhandling_appendMapData(void *data, const char *key, const char *value) {
 // transform aprmap to json string
 char *jsonhandling_aprmap2json(apr_pool_t *pool, apr_table_t *map) {
 	DEBUG_PUT("%s_aprmap2json([pool], [map])...");
-	map2json_t *map2jsonObj = map2json_init();
+	map2json_t *map2jsonObj = map2json_init(NULL);
 
 	apr_table_do(jsonhandling_appendMapData, map2jsonObj, map, NULL);
 
 	DEBUG_PUT("%s_aprmap2json([pool], [map]): create map2json object");
 	map2json_create(map2jsonObj);
-	size_t length = strlen(map2jsonObj->buffer);
+	size_t length = strlen(map2jsonObj->buffer->data);
 
 	DEBUG_MSG("%s_aprmap2json([pool], [map]): json length=%ld", length);
 	char *jsonString = apr_pcalloc(pool, length + 1);

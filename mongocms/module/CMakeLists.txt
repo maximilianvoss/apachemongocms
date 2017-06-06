@@ -4,6 +4,8 @@ set(SOURCE_FILES
         directives.c
         directives.h requesthandler.c requesthandler.h)
 
-add_library(${installname}_module SHARED ${SOURCE_FILES})
-target_link_libraries(${installname}_module)
-install(TARGETS ${installname}_module LIBRARY DESTINATION ${installtarget} COMPONENT ${installname}_module)
+if (NOT TARGET mod_mongocms_module)
+    add_library(mod_mongocms_module SHARED ${SOURCE_FILES})
+    target_link_libraries(mod_mongocms_module)
+    install(TARGETS mod_mongocms_module LIBRARY DESTINATION ${installtarget} COMPONENT mod_mongocms_module)
+endif()

@@ -1,4 +1,3 @@
-set(installname "mod_mongocms")
 set(installtarget "/usr/local/mongocms/lib")
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})

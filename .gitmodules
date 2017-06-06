@@ -1,0 +1,12 @@
+[submodule "mongocms/libs/csafestring"]
+	path = mongocms/libs/csafestring
+	url = https://github.com/maximilianvoss/csafestring.git
+	branch = master
+[submodule "mongocms/libs/ctemplate"]
+	path = mongocms/libs/ctemplate
+	url = https://github.com/maximilianvoss/ctemplate.git
+	branch = master
+[submodule "mongocms/libs/json2map"]
+	path = mongocms/libs/json2map
+	url = https://github.com/maximilianvoss/json2map.git
+	branch = master
