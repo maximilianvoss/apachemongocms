@@ -10,7 +10,6 @@
 
 int request_handler(request_rec *request) {
 	LOGGING_DEBUG_R(request, "START");
-	LOGGING_DEBUG_S("START");
 	
 	if ( strcmp(request->handler, "mongocms") ) {
 		LOGGING_DEBUG_R(request, "DONE");
