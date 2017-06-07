@@ -27,6 +27,7 @@ int registration_user(request_rec *request) {
 		return HTTP_CONFLICT;
 	}
 
+	LOGGING_DEBUG_R(request, "register user: %s", user);
 	char *hashedPassword = password_hashPassword(request->pool, user, password);
 	apr_table_set(requestMap, MONGO_PROPERTY_USERNAME, user);
 	apr_table_set(requestMap, MONGO_PROPERTY_PASSWORD, hashedPassword);

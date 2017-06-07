@@ -100,7 +100,7 @@ void mongo_update(mongo_config_t *config, apr_pool_t *pool, apr_table_t *oldMap,
 
 // commit a document to the database
 char *mongo_commit(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
-	DEBUG_PUT("%s_commit([mongo_config_t *], [apr_pool_t *], [apr_table_t *])...");
+	LOGGING_DEBUG_S("START");
 	bson_error_t error;
 	bson_oid_t *oid;
 	bson_t *doc;
@@ -118,7 +118,8 @@ char *mongo_commit(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
 
 	if ( !mongoc_collection_insert(collection, MONGOC_INSERT_NONE, doc, NULL, &error) ) {
 		bson_destroy(doc);
-		DEBUG_PUT("%s_commit([mongo_config_t *], [apr_pool_t *], [apr_table_t *]): was not able to insert document");
+		LOGGING_ERROR_S("was not able to insert document");
+		LOGGING_ERROR_S("DONE");
 		return NULL;
 	}
 
@@ -126,8 +127,8 @@ char *mongo_commit(mongo_config_t *config, apr_pool_t *pool, apr_table_t *map) {
 	mongo_disconnect(config, client, collection);
 
 	bson_oid_to_string(oid, documentId);
-	
-	DEBUG_PUT("%s_commit([mongo_config_t *], [apr_pool_t *], [apr_table_t *])... DONE");
+
+	LOGGING_ERROR_S("DONE");
 	return documentId;
 }
 
