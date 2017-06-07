@@ -15,7 +15,6 @@ This file contains all necessary includes to run the programm
 #include <apr_strings.h>
 #include <apr_tables.h>
 #include <apr_lib.h>
-#include <apr.h>
 
 #include <httpd.h>
 #include <http_config.h>

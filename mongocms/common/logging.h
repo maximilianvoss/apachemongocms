@@ -29,6 +29,6 @@
 //#define LOGGING_DEBUG(fmt, ...) if ( LOGGING_LEVEL > 2 ) { fprintf(stderr, "DEBUG: %s:%d - %s: ", __FILE__, __LINE__, __FUNCTION__); fprintf(stderr, fmt, ##__VA_ARGS__); fprintf(stderr, "\n"); }
 //#define LOGGING_TRACE(fmt, ...) if ( LOGGING_LEVEL > 3 ) { fprintf(stderr, "TRACE: %s:%d - %s: ", __FILE__, __LINE__, __FUNCTION__); fprintf(stderr, fmt, ##__VA_ARGS__); fprintf(stderr, "\n"); }
 
-#define LOGGING_ERROR(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APRLOG_ERR, APR_SUCCESS, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
+#define LOGGING_ERROR(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APLOG_ERR, APR_SUCCESS, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
 
 #endif
