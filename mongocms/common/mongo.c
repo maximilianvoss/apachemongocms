@@ -1,9 +1,9 @@
 #include "mongo.h"
 #include "jsonhandling.h"
 
+#include "../common/logging.h"
 #ifdef COMMON_MONGO_DEBUG
 
-#include "../common/logging.h"
 
 #define DEBUG_MSG(fmt, ...) LOG_SERVER_DEBUG_FORMAT(fmt, "mongo", __VA_ARGS__)
 #define DEBUG_PUT(fmt) LOG_SERVER_DEBUG_FORMAT(fmt, "mongo")
