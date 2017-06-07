@@ -80,10 +80,10 @@ apr_table_t *user_getUserMap(request_rec *request) {
 	return userMap;
 }
 
-char inline *user_getUserName(apr_table_t *userMap) {
+char *user_getUserName(apr_table_t *userMap) {
 	return (char *) apr_table_get(userMap, MONGO_PROPERTY_USERNAME);
 }
 
-char inline *user_getUserId(apr_table_t *userMap) {
+char *user_getUserId(apr_table_t *userMap) {
 	return (char *) apr_table_get(userMap, MONGO_PROPERTY_OID);
 }
