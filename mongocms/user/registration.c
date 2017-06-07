@@ -19,7 +19,7 @@ int registration_user(request_rec *request) {
 		return HTTP_BAD_REQUEST;
 	}
 
-	apr_table_t *usermap = user_checkExistence(request->pool, user, NULL);
+	apr_table_t *usermap = user_checkExistence(request, user, NULL);
 	if ( !apr_is_empty_table(usermap) ) {
 		ap_rputs("{\"Status\":\"user exists\"}", request);
 		LOGGING_DEBUG_R(request, "user: %s already exists", user);
@@ -56,7 +56,7 @@ int registration_removeUser(request_rec *request) {
 
 	char *hashedPassword = password_hashPassword(request->pool, user, password);
 
-	apr_table_t *usermap = user_checkExistence(request->pool, user, hashedPassword);
+	apr_table_t *usermap = user_checkExistence(request, user, hashedPassword);
 	if ( apr_is_empty_table(usermap) ) {
 		ap_rputs("{\"Status\":\"user doesnt exist\"}", request);
 		LOGGING_DEBUG_R(request, "user: %s doesn't exist", user);

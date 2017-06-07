@@ -32,7 +32,7 @@ int login_doLogin(request_rec *request) {
 
 	char *hashedPassword = password_hashPassword(request->pool, user, password);
 
-	apr_table_t *usermap = user_checkExistence(request->pool, user, hashedPassword);
+	apr_table_t *usermap = user_checkExistence(request, user, hashedPassword);
 	if ( apr_is_empty_table(usermap) ) {
 		ap_rputs("{\"Status\":\"invalid user\"}", request);
 		return HTTP_FORBIDDEN;
