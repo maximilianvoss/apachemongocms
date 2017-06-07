@@ -1,6 +1,7 @@
 #include "mongo.h"
 #include "jsonhandling.h"
 
+#define COMMON_MONGO_DEBUG
 #include "../common/logging.h"
 #ifdef COMMON_MONGO_DEBUG
 
