@@ -2,25 +2,15 @@
 #include "../common/cookie.h"
 #include "../mod_mongocms.h"
 #include "userhandler.h"
-
-#ifdef LOGIN_USER_DEBUG
-
 #include "../common/logging.h"
 
-#define DEBUG_MSG(fmt, ...) LOG_SERVER_DEBUG_FORMAT(fmt, "user", __VA_ARGS__)
-#define DEBUG_PUT(fmt) LOG_SERVER_DEBUG_FORMAT(fmt, "user")
-#else
-#define DEBUG_MSG(fmt, ...)
-#define DEBUG_PUT(fmt)
-#endif
+apr_table_t *user_checkExistence(request_rec *request, const char *user, char *hashedPassword) {
+	LOGGING_DEBUG_R(request, "START");
 
-apr_table_t *user_checkExistence(apr_pool_t *pool, const char *username, char *hashedPassword) {
-	DEBUG_MSG("%s_checkExistence([apr_pool_t *], %s)...", username);
+	apr_table_t *queryMap = apr_table_make(request->pool, 2);
+	apr_table_t *userMap = apr_table_make(request->pool, 30);
 
-	apr_table_t *queryMap = apr_table_make(pool, 2);
-	apr_table_t *userMap = apr_table_make(pool, 30);
-
-	apr_table_set(queryMap, MONGO_PROPERTY_USERNAME, username);
+	apr_table_set(queryMap, MONGO_PROPERTY_USERNAME, user);
 	if ( hashedPassword != NULL ) {
 		apr_table_set(queryMap, MONGO_PROPERTY_PASSWORD, hashedPassword);
 	}
@@ -28,23 +18,24 @@ apr_table_t *user_checkExistence(apr_pool_t *pool, const char *username, char *h
 	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, pool, queryMap);
 	bson_t *doc;
 	if ( mongoc_cursor_next(cursor->cursor, (const bson_t **) &doc) ) {
-		DEBUG_MSG("%s_checkExistence([apr_pool_t *], %s): User found", username);
+		LOGGING_INFO_R(request, "User: %s found", user);
 		mongo_bson2map(userMap, doc);
 	} else {
-		DEBUG_MSG("%s_checkExistence([apr_pool_t *], %s): User not found", username);
+		LOGGING_INFO_R(request, "User: %s not found", user);
 	}
 	mongo_destroyCursor(cursor);
 
-	DEBUG_MSG("%s_checkExistence([apr_pool_t *], %s)... DONE", username);
+	LOGGING_DEBUG_R(request, "DONE");
 	return userMap;
 }
 
 uint8_t user_isLoginValid(request_rec *request) {
-	DEBUG_PUT("%s_isLoginValid([request_rec *])...");
+	LOGGING_DEBUG_R(request, "START");
 
 	char *tokenId = cookie_getCookie(request, "tokenId");
 	if ( tokenId == NULL ) {
-		DEBUG_PUT("%s_isLoginValid([request_rec *]): token is invalid");
+		LOGGING_ERROR_R(request, "token is invalid");
+		LOGGING_DEBUG_R(request, "DONE");
 		return 0;
 	}
 	
@@ -54,20 +45,20 @@ uint8_t user_isLoginValid(request_rec *request) {
 	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, request->pool, queryMap);
 	bson_t *doc;
 	if ( mongoc_cursor_next(cursor->cursor, (const bson_t **) &doc) ) {
-		DEBUG_PUT("%s_isLoginValid([request_rec *]): User found");
+		LOGGING_DEBUG_R(request, "user for tokenId=%s found", tokenId);
 		mongo_destroyCursor(cursor);
-		DEBUG_PUT("%s_isLoginValid([request_rec *])... DONE");
+		LOGGING_DEBUG_R(request, "DONE");
 		return 1;
 	} else {
-		DEBUG_PUT("%s_isLoginValid([request_rec *]): User not found");
+		LOGGING_DEBUG_R(request, "user for tokenId=%s not found", tokenId);
 		mongo_destroyCursor(cursor);
-		DEBUG_PUT("%s_isLoginValid([request_rec *])... DONE");
+		LOGGING_DEBUG_R(request, "DONE");
 		return 0;
 	}
 }
 
 apr_table_t *user_getUserMap(request_rec *request) {
-	DEBUG_PUT("%s_isLoginValid([request_rec *])...");
+	LOGGING_DEBUG_R(request, "START");
 
 	apr_table_t *userMap = apr_table_make(request->pool, 30);
 
@@ -78,25 +69,21 @@ apr_table_t *user_getUserMap(request_rec *request) {
 	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, request->pool, queryMap);
 	bson_t *doc;
 	if ( mongoc_cursor_next(cursor->cursor, (const bson_t **) &doc) ) {
-		DEBUG_PUT("%s_isLoginValid([request_rec *]): User found");
+		LOGGING_DEBUG_R(request, "user for tokenId=%s found", tokenId);
 		mongo_bson2map(userMap, doc);
 	} else {
-		DEBUG_PUT("%s_isLoginValid([request_rec *]): User not found");
+		LOGGING_DEBUG_R(request, "user for tokenId=%s not found", tokenId);
 	}
 	mongo_destroyCursor(cursor);
 
-	DEBUG_PUT("%s_isLoginValid([request_rec *])... DONE");
+	LOGGING_DEBUG_R(request, "DONE");
 	return userMap;
 }
 
-char *user_getUserName(apr_table_t *userMap) {
-	DEBUG_PUT("%s_getUserName([apr_table_t *])...");
-	DEBUG_PUT("%s_getUserName([apr_table_t *])... DONE");
+char inline *user_getUserName(apr_table_t *userMap) {
 	return (char *) apr_table_get(userMap, MONGO_PROPERTY_USERNAME);
 }
 
-char *user_getUserId(apr_table_t *userMap) {
-	DEBUG_PUT("%s_getUserId([apr_table_t *])...");
-	DEBUG_PUT("%s_getUserId([apr_table_t *])... DONE");
+char inline *user_getUserId(apr_table_t *userMap) {
 	return (char *) apr_table_get(userMap, MONGO_PROPERTY_OID);
 }
