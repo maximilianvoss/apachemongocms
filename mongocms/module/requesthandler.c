@@ -6,9 +6,10 @@
 #include "../documents/documents.h"
 #include "../user/user.h"
 #include "../constants.h"
+#include "../common/logging.h"
 
 int request_handler(request_rec *request) {
-
+	LOGGING_ERROR("huhu");
 	if ( strcmp(request->handler, "mongocms") ) {
 		return DECLINED;
 	}
