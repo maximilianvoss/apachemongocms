@@ -64,5 +64,5 @@ static int user_getEntryList(mongo_config_t *mongoConfig, request_rec *request, 
 			->user.propMappingIn, getModuleConfig()->user.propMappingOut, filename);
 	LOGGING_DEBUG_R(request, "retVal=%d", retVal);
 	LOGGING_DEBUG_R(request, "DONE");
-
+	return retVal;
 }
