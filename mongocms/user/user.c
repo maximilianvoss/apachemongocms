@@ -15,7 +15,7 @@ apr_table_t *user_checkExistence(request_rec *request, const char *user, char *h
 		apr_table_set(queryMap, MONGO_PROPERTY_PASSWORD, hashedPassword);
 	}
 
-	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, pool, queryMap);
+	mongo_cursor_t *cursor = mongo_query(&getModuleConfig()->user.database, request->pool, queryMap);
 	bson_t *doc;
 	if ( mongoc_cursor_next(cursor->cursor, (const bson_t **) &doc) ) {
 		LOGGING_INFO_R(request, "User: %s found", user);
