@@ -14,7 +14,7 @@
 //// DEBUG    3
 //// TRACE    4
 
-#define LOGGING_ERROR(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APLOG_ERR, -1, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
+#define LOGGING_ERROR(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APLOG_ERR, 0, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
 #define LOGGING_WARN(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APLOG_WARNING, APR_SUCCESS, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
 #define LOGGING_INFO(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APLOG_INFO, APR_SUCCESS, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
 #define LOGGING_DEBUG(fmt, ...) if(getModuleConfig()->serverRec != NULL) ap_log_error(__FILE__, __LINE__, 1, APLOG_DEBUG, APR_SUCCESS, getModuleConfig()->serverRec, fmt, ##__VA_ARGS__)
